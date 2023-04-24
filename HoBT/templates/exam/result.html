@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container my-5">
+    <h2>결과</h2>
+    <p>총 문제 수: {{ total }}</p>
+    <p>맞은 문제 수: {{ correct_answers }}</p>
+    <p>틀린 문제 수: {{ wrong_answers }}</p>
+    {% if is_passed %}
+      <p class="text-success">합격입니다!</p>
+    {% else %}
+      <p class="text-danger">불합격입니다.</p>
+    {% endif %}
+    <a href="{% url 'hobt:index' %}" class="btn btn-primary">돌아가기</a>
+  </div>
+{% endblock %}

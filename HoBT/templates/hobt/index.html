@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark text-white">
+  <div class="text-center d-flex flex-column justify-content-center">
+    <h1 style="font-size: 5rem; margin-top: -300px;">최강기출 HoBT</h1>
+    <p class="mb-4">지금 당장 풀어 보시고 자격증을 취득해보세요!</p>
+    <div class="mt-auto d-flex flex-row justify-content-center">
+      <a style="font-size: 2rem;" href="{% url 'hobt:index' %}" class="btn btn-lg btn-primary">문제 풀러 가기</a>
+      {% if user.is_superuser %}
+      <a style="font-size: 2rem; margin-left: 30px;" href="{% url 'exam:add_problem' %}" class="btn btn-lg btn-success">문제 만들러 가기</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="mb-4">문제 입력</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="qid">문제 번호:</label>
+          <input type="number" class="form-control" id="qid" name="qid" required>
+        </div>
+        <div class="form-group">
+          <label for="answer">문제 정답:</label>
+          <input type="text" class="form-control" id="answer" name="answer" required>
+        </div>
+        <div class="form-group">
+          <label for="similar_answer">문제 유사 정답:</label>
+          <textarea class="form-control" id="similar_answer" name="similar_answer"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="content">문제 내용:</label>
+          <textarea class="form-control" id="content" name="content" required></textarea>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="appearance_date">출제 연도:</label>
+          <input type="text" class="form-control" id="appearance_date" name="appearance_date" required>
+        </div>
+        <div class="form-group">
+          <label for="small_category">문제 소 분류:</label>
+          <input type="text" class="form-control" id="small_category" name="small_category" required>
+        </div>
+        <div class="form-group">
+          <label for="big_category">문제 대 분류:</label>
+          <input type="text" class="form-control" id="big_category" name="big_category" required>
+        </div>
+        <div class="form-group">
+          <label for="note">비고:</label>
+          <textarea class="form-control" id="note" name="note"></textarea>
+        </div>
+      </div>
+    </div>
+    <button type="submit" formaction="{% url 'exam:add_problem' %}" class="btn btn-primary">문제 추가</button>
+  </form>
+</div>
+{% endblock %}

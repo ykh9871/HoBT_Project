@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container my-3">
+    <h2 class="my-3">회원 탈퇴</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+        {% if error_msg %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_msg }}
+        </div>
+        {% endif %}
+        <p class="my-3">정말로 탈퇴하시겠습니까?</p>
+        <button type="submit" class="btn btn-danger">예, 탈퇴합니다</button>
+        <a href="{% url 'hobt:index' %}" class="btn btn-secondary ms-2">취소</a>
+    </form>
+</div>
+{% endblock %}

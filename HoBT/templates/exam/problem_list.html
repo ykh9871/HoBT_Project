@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container my-5">
+    <h2 class="mb-4">문제 리스트</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>문제 번호</th>
+          <th>문제 내용</th>
+          <th>문제 정답</th>
+          <th>문제 유사 정답</th>
+          <th>출제 연도</th>
+          <th>소 분류</th>
+          <th>대 분류</th>
+          <th>비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for problem in problems %}
+        <tr>
+          <td>{{ problem.qid }}</td>
+          <td>{{ problem.content }}</td>
+          <td>{{ problem.answer }}</td>
+          <td>{{ problem.similar_answer }}</td>
+          <td>{{ problem.appearance_date }}</td>
+          <td>{{ problem.small_category }}</td>
+          <td>{{ problem.big_category }}</td>
+          <td>{{ problem.note }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+      <a href="{% url 'exam:add_problem' %}" class="btn btn-primary mr-3">문제 출제하기</a>
+      <a href="{% url 'hobt:index' %}" class="btn btn-secondary">메인으로</a>
+    </div>
+  </div>
+{% endblock %}

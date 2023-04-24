@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container my-5">
+    <h2>문제 {{ current_question.qid }}</h2>
+    <p>{{ current_question.content }}</p>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="question_num" value="{{ current_question.qid }}">
+      <div class="form-group">
+        <label for="answer">답:</label>
+        <input type="text" class="form-control" id="answer" name="answer" required>
+      </div>
+      <button type="submit" class="btn btn-primary">다음 문제</button>
+    </form>
+  </div>
+{% endblock %}
