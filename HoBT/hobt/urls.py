@@ -18,4 +18,16 @@ urlpatterns = [
 
     # 게시판 페이지에 대한 URL 매핑
     path('question/', views.question, name='question'),
+    # 질문 수정에 대한 URL 매핑
+    path('question/modify/<int:question_id>/', views.question_modify, name='question_modify'),
+    # 질문 삭제에 대한 URL 매핑
+    path('question/delete/<int:question_id>/', views.question_delete, name='question_delete'),
+    # 답변 수정에 대한 URL 매핑
+    path('answer/modify/<int:answer_id>/', views.answer_modify, name='answer_modify'),
+    # 답변 삭제에 대한 URL 매핑
+    path('answer/delete/<int:answer_id>/', views.answer_delete, name='answer_delete'),
+    # 질문 추천 URL 매핑
+    path('question/vote/<int:question_id>/', views.question_vote, name='question_vote'),
+    # 답변 추천 URL 매핑
+    path('answer/vote/<int:answer_id>/', views.answer_vote, name='answer_vote'),
 ]

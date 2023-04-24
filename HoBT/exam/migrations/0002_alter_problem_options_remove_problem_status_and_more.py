@@ -14,10 +14,6 @@ class Migration(migrations.Migration):
             name='problem',
             options={'ordering': ['qid']},
         ),
-        migrations.RemoveField(
-            model_name='problem',
-            name='Status',
-        ),
         migrations.AlterField(
             model_name='problem',
             name='answer',
