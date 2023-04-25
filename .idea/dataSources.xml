@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:mysql://localhost:3306/hobt</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="@hobtdb.cgvif8lsqknk.us-east-2.rds.amazonaws.com" uuid="4ae71572-5bfa-428b-827f-eb927ff6d52c">
+    <data-source source="LOCAL" name="@database-1.cg3vesqevnrv.ap-northeast-2.rds.amazonaws.com" uuid="a184adc2-398f-40cb-859f-68a4fb6e645f">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://hobtdb.cgvif8lsqknk.us-east-2.rds.amazonaws.com:3306</jdbc-url>
+      <jdbc-url>jdbc:mysql://database-1.cg3vesqevnrv.ap-northeast-2.rds.amazonaws.com:3306</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
