@@ -24,4 +24,5 @@ urlpatterns = [
     path('common/', include('common.urls')),
     path('exam/', include('exam.urls')),
     path('', views.index, name="index"),
+    path('hobt_dict/', include('hobt_dict.urls'))
 ]

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="my-4">문제 사전</h1>
+    <form action="{% url 'hobt_dict:search' %}" method="GET" class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="검색어를 입력하세요" aria-label="검색어" name="q">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
+    </form>
+    <hr>
+    {% for hobt_dict in hobt_dicts %}
+      <div class="card mb-4">
+        <div class="card-body">
+          <h2 class="card-title">{{ hobt_dict.qid }}번 문제</h2>
+          <h4 class="card-subtitle mb-2 text-muted">{{ hobt_dict.small_category }} | {{ hobt_dict.big_category }} | {{ hobt_dict.appearance_date }}</h4>
+          <p class="card-text">{{ hobt_dict.content|safe }}</p>
+          <a href="{% url 'hobt_dict:hobt_dict_detail' hobt_dict.pk %}" class="btn btn-primary">더보기</a>
+        </div>
+        <div class="card-footer text-muted">
+          추천수: {{ hobt_dict.hobt_dict_like.count }}
+        </div>
+      </div>
+    {% empty %}
+      <p>등록된 문제가 없습니다.</p>
+    {% endfor %}
+    <hr>
+    <div class="pagination justify-content-center">
+      {% if hobt_dicts.has_previous %}
+        <a class="btn btn-outline-primary" href="?page={{ hobt_dicts.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" role="button">이전</a>
+      {% else %}
+        <button class="btn btn-outline-secondary" type="button" disabled>이전</button>
+      {% endif %}
+      <span class="mx-2">{{ hobt_dicts.number }} 페이지</span>
+      {% if hobt_dicts.has_next %}
+        <a class="btn btn-outline-primary" href="?page={{ hobt_dicts.next_page_number }}{% if q %}&q={{ q }}{% endif %}" role="button">다음</a>
+      {% else %}
+        <button class="btn btn-outline-secondary" type="button" disabled>다음</button>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,130 @@
+from django.shortcuts import render, get_object_or_404, redirect
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.http import JsonResponse
+from django.views import View
+
+from .models import HobtDict
+from .forms import HobtDictForm
+
+
+def hobt_dict(request):
+    """
+    문제 사전 게시판 메인 페이지
+    """
+    # 페이지네이션 기능 추가
+    q = request.GET.get('q', '')  # 검색어
+    page = request.GET.get('page', '1')  # 페이지
+
+    hobt_dict_list = HobtDict.objects.order_by('-qid')
+    if q:
+        hobt_dict_list = hobt_dict_list.filter(
+            Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q)| Q(qid__icontains=q)
+        ).distinct()
+
+    paginator = Paginator(hobt_dict_list, 10)
+    hobt_dicts = paginator.get_page(page)
+
+    context = {'hobt_dicts': hobt_dicts, 'page': page, 'q': q}
+    return render(request, 'hobt_dict/hobt_dict.html', context)
+
+
+class HobtDictCreateView(View):
+    """
+    문제 등록
+    """
+    def get(self, request):
+        form = HobtDictForm()
+        return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
+
+    def post(self, request):
+        form = HobtDictForm(request.POST)
+        if form.is_valid():
+            hobt_dict = form.save(commit=False)
+            hobt_dict.author = request.user
+            hobt_dict.save()
+            messages.success(request, '문제가 등록되었습니다.')
+            return redirect(hobt_dict)
+        return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
+
+
+def hobt_dict_modify(request, pk):
+    """
+    문제 수정
+    """
+    hobt_dict = get_object_or_404(HobtDict, pk=pk)
+    if request.user != hobt_dict.author:
+        messages.error(request, '수정권한이 없습니다')
+        return redirect('hobt_dict:hobt_dict_detail', pk=hobt_dict.pk)
+
+    if request.method == 'POST':
+        form = HobtDictForm(request.POST, instance=hobt_dict)
+        if form.is_valid():
+            hobt_dict = form.save(commit=False)
+            hobt_dict.author = request.user
+            hobt_dict.save()
+            form.save_m2m()  # ManyToManyField를 저장하는 데 필요
+            messages.success(request, '문제가 수정되었습니다')
+            return redirect(hobt_dict)
+    else:
+        form = HobtDictForm(instance=hobt_dict)
+    return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
+
+
+@login_required(login_url='common:login')
+def hobt_dict_delete(request, pk):
+    """
+    문제 삭제
+    """
+    hobt_dict = get_object_or_404(HobtDict, pk=pk)
+    if request.user != hobt_dict.author:
+        messages.error(request, '삭제권한이 없습니다')
+    else:
+        hobt_dict.delete()
+        messages.success(request, '문제가 삭제되었습니다.')
+        return redirect('hobt_dict:hobt_dict')
+
+
+@login_required(login_url='common:login')
+@require_POST
+def hobt_dict_like(request):
+    """
+    문제 추천
+    """
+    pk = request.POST.get('pk', None)
+    hobt_dict = get_object_or_404(HobtDict, pk=pk)
+    hobt_dict.like.add(request.user)
+    return JsonResponse({'status': 'ok'})
+
+
+@login_required(login_url='common:login')
+def hobt_dict_detail(request, pk):
+    """
+    문제 상세보기
+    """
+    hobt_dict = get_object_or_404(HobtDict, pk=pk)
+    context = {'hobt_dict': hobt_dict}
+    return render(request, 'hobt_dict/detail.html', context)
+
+
+def search(request):
+    """
+    문제 검색 기능
+    """
+    q = request.GET.get('q', '')  # 검색어
+    page = request.GET.get('page', '1')  # 페이지
+
+    hobt_dict_list = HobtDict.objects.order_by('-qid')
+    if q:
+        hobt_dict_list = hobt_dict_list.filter(
+            Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q) | Q(qid__icontains=q)
+        ).distinct()
+
+    paginator = Paginator(hobt_dict_list, 10)
+    hobt_dicts = paginator.get_page(page)
+
+    context = {'hobt_dicts': hobt_dicts, 'page': page, 'q': q}
+    return render(request, 'hobt_dict/hobt_dict.html', context)

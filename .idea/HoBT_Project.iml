@@ -31,6 +31,7 @@
         <option value="$MODULE_DIR$/HoBT/templates/common" />
         <option value="$MODULE_DIR$/HoBT/templates/hobt" />
         <option value="$MODULE_DIR$/HoBT/templates/exam" />
+        <option value="$MODULE_DIR$/HoBT/templates/hobt_dict" />
       </list>
     </option>
   </component>

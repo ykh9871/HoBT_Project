@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <h2>문제 등록</h2>
+        <form method="post">
+          {% csrf_token %}
+          {% include 'hobt_dict/form.html' %}
+          <button type="submit" class="btn btn-primary">저장</button>
+          <a href="{% url 'hobt_dict:hobt_dict' %}" class="btn btn-secondary">취소</a>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
