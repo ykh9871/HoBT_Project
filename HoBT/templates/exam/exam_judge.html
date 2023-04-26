@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <h2>문제 결과</h2>
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-md-4 mb-3">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">작성 답안</h5>
+                <p class="card-text">{{ first_answer }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mb-3">
+            <div class="card text-center border-{{ answer_status }}">
+              <div class="card-body">
+                <h5 class="card-title">실제 답안</h5>
+                <p class="card-text">{{ answer }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 mb-3">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">유사 답안</h5>
+                <p class="card-text">{{ similar_answer }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-5">
+        <form action="{% url 'exam:exam' %}" method="get">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="judgement">평가 결과를 입력해주세요. (정답: 1, 오답: 2)</label>
+            <input type="text" class="form-control" id="judgement" name="judgement" required>
+          </div>
+{#          <button type="submit" class="btn btn-primary">제출</button>#}
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -2,38 +2,75 @@
 
 {% block content %}
   <div class="container my-5">
-    <h2 class="mb-4">문제 리스트</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>문제 번호</th>
-          <th>문제 내용</th>
-          <th>문제 정답</th>
-          <th>문제 유사 정답</th>
-          <th>출제 연도</th>
-          <th>소 분류</th>
-          <th>대 분류</th>
-          <th>비고</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for problem in problems %}
-        <tr>
-          <td>{{ problem.qid }}</td>
-          <td>{{ problem.content }}</td>
-          <td>{{ problem.answer }}</td>
-          <td>{{ problem.similar_answer }}</td>
-          <td>{{ problem.appearance_date }}</td>
-          <td>{{ problem.small_category }}</td>
-          <td>{{ problem.big_category }}</td>
-          <td>{{ problem.note }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <div class="d-flex justify-content-center">
-      <a href="{% url 'exam:add_problem' %}" class="btn btn-primary mr-3">문제 출제하기</a>
-      <a href="{% url 'hobt:index' %}" class="btn btn-secondary">메인으로</a>
-    </div>
+    <h2 class="mb-4">
+      <label>
+        <input type="checkbox" id="select-all-checkbox">
+        관리자 문제 리스트
+      </label>
+    </h2>
+    <form method="post" action="{% url 'exam:add_selected_problems' %}">
+      {% csrf_token %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>문제 번호</th>
+            <th>문제 내용</th>
+            <th>문제 정답</th>
+            <th>문제 유사 정답</th>
+            <th>출제 연도</th>
+            <th>소 분류</th>
+            <th>대 분류</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for problem in problems %}
+          <tr>
+            <td>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="selected_problems" value="{{ problem.qid }}">
+                <label class="form-check-label" for="selected_problems">
+                  {{ problem.qid }}
+                </label>
+              </div>
+            </td>
+            <td>{{ problem.content }}</td>
+            <td>{{ problem.answer }}</td>
+            <td>{{ problem.similar_answer }}</td>
+            <td>{{ problem.appearance_date }}</td>
+            <td>{{ problem.small_category }}</td>
+            <td>{{ problem.big_category }}</td>
+            <td>{{ problem.note }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center">
+        <a href="{% url 'exam:add_problem' %}" class="btn btn-secondary">문제 출제하기</a>
+        <a href="{% url 'hobt:index' %}" class="btn btn-secondary">메인으로</a>
+      </div>
+      <!-- 최종 제출 버튼 -->
+      <div class="d-flex justify-content-center">
+        <form method="post" action="{% url 'exam:add_selected_problems' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success">최종 제출</button>
+        </form>
+      </div>
+    </form>
   </div>
+
+  <script>
+    // 전체 선택 체크박스 요소
+    const selectAllCheckbox = document.querySelector('#select-all-checkbox');
+
+    // 선택된 문제들의 체크박스 요소들
+    const selectedCheckboxes = document.querySelectorAll('input[name="selected_problems"]');
+
+    // 전체 선택 체크박스를 클릭했을 때, 선택된 문제들의 체크박스 요소들도 전체 선택/해제
+    selectAllCheckbox.addEventListener('click', () => {
+      for (let i = 0; i < selectedCheckboxes.length; i++) {
+        selectedCheckboxes[i].checked = selectAllCheckbox.checked;
+      }
+    });
+  </script>
 {% endblock %}

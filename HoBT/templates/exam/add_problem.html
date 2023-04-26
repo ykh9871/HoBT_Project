@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div class="container my-5">
   <h2 class="mb-4">문제 입력</h2>
   <form method="post">
@@ -43,7 +44,10 @@
         </div>
       </div>
     </div>
-    <button type="submit" formaction="{% url 'exam:add_problem' %}" class="btn btn-primary">문제 추가</button>
+    <div class="btn-group my-3" role="group">
+      <button type="submit" formaction="{% url 'exam:add_problem' %}" class="btn btn-primary mr-3">문제 추가</button>
+      <a href="{% url 'exam:problem_list' %}" class="btn btn-danger">문제 리스트</a>
+    </div>
   </form>
 </div>
 {% endblock %}
