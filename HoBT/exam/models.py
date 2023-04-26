@@ -1,26 +1,30 @@
 from django.db import models
-from django import forms
-
-
-STATUS_CHOICES = (
-    (1, '사용 가능'),
-    (2, '사용 불가'),
-)
 
 
 class Problem(models.Model):
     qid = models.IntegerField(primary_key=True)
-    answer = models.CharField(max_length=100)
-    similar_answer = models.TextField(blank=True)
+    answer = models.TextField()
+    similar_answer = models.TextField()
     content = models.TextField()
-    appearance_date = models.DateField()
-    small_category = models.CharField(max_length=100)
-    big_category = models.CharField(max_length=100)
-    note = models.TextField(blank=True)
-
-    def __str__(self):
-        return f'Problem {self.qid}'
+    appearance_date = models.TextField()
+    small_category = models.TextField()
+    big_category = models.TextField()
+    note = models.TextField()
 
     class Meta:
+        db_table = 'exam_problem'
+
+
+class Hobt1(models.Model):
+    qid = models.IntegerField(primary_key=True)
+    answer = models.TextField()
+    similar_answer = models.TextField()
+    content = models.TextField()
+    appearance_date = models.TextField()
+    small_category = models.TextField()
+    big_category = models.TextField()
+    note = models.TextField()
+
+    class Meta:
+        db_table = 'hobt_1'
         ordering = ['qid']
-        
