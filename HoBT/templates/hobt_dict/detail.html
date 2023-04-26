@@ -56,22 +56,23 @@
               <span class="span font-weight-bold">유사 답안:</span>
               <span class="span">  {{ hobt_dict.similar_answer }}</span>
             </div>
-            {% if request.user.is_authenticated %}
-            <div class="mb-4">
-              {% if request.user in hobt_dict.hobt_dict_like.all %}
-              <a href="{% url 'hobt_dict:hobt_dict_like' %}" class="btn btn-danger btn-sm" id="like-button" data-pk="{{ hobt_dict.pk }}">
-                <i class="fas fa-thumbs-down"></i>
-                <span>추천 취소</span>
-              </a>
-              {% else %}
-              <a href="javascript:void(0)" data-uri="{% url 'hobt_dict:hobt_dict_like' answer.id  %}"
-                 class="recommend btn btn-sm btn-outline-secondary"> 추천
-                  <span class="badge rounded-pill bg-success">{{hobt_dict.hobtdict_like.count}}</span>
+              {% if user.is_authenticated %}
+              <div class="mb-4">
+                <a href="#" class="recommend btn btn-sm btn-outline-secondary" data-pk="{{ hobt_dict.pk }}">
+                  추천
+                  <span class="badge rounded-pill bg-success like-count">{{ hobt_dict.like.count }}</span>
                 </a>
+              </div>
+              {% else %}
+              <div class="alert alert-warning" role="alert">
+                추천을 하시려면 <a href="{% url 'common:login' %}?next={{ request.path }}">로그인</a>을 해주세요.
+              </div>
               {% endif %}
-              <span class="ml-2" id="like-count">{{ hobt_dict_hobtdict_like.count }}</span>
-            </div>
-            {% endif %}
+                {% if user == hobt_dict.author %}
+                  <div class="mb-4">
+                    <a href="{% url 'hobt_dict:hobt_dict_modify' pk=hobt_dict.pk %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                  </div>
+                {% endif %}
           </div>
         </div>
       </div>
@@ -80,22 +81,34 @@
 </div>
 {% endblock %}
 {% block script %}
-<script type='text/javascript'>
-const delete_elements = document.getElementsByClassName("delete");
-Array.from(delete_elements).forEach(function(element) {
-    element.addEventListener('click', function() {
-        if(confirm("정말로 삭제하시겠습니까?")) {
-            location.href = this.dataset.uri;
-        };
-    });
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).on('click', '.recommend', function(e) {
+  e.preventDefault();
+  const button = $(this);
+  const pk = button.data('pk');
+  const likeCountSpan = button.find('.like-count');
+  $.ajax({
+    url: "{% url 'hobt_dict:hobt_dict_like' pk=hobt_dict.pk %}".replace('pk', pk),
+    method: 'POST',
+    data: {
+      'pk': pk,
+      'csrfmiddlewaretoken': '{{ csrf_token }}'
+    },
+    success: function(response) {
+      likeCountSpan.html(response.like_count);
+      alert(response.message);
+    },
+    error: function(xhr, errmsg, err) {
+      if (xhr.status === 403) {
+        alert('로그인이 필요한 기능입니다.');
+      } else {
+        alert('Error occurred.');
+        console.log(xhr.status + ': ' + xhr.responseText);
+      }
+    }
+  });
 });
-const recommend_elements = document.getElementsByClassName("recommend");
-Array.from(recommend_elements).forEach(function(element) {
-    element.addEventListener('click', function() {
-        if(confirm("정말로 추천하시겠습니까?")) {
-            location.href = this.dataset.uri;
-        };
-    });
-});
+
 </script>
 {% endblock %}

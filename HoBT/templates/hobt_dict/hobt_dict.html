@@ -17,7 +17,7 @@
           <a href="{% url 'hobt_dict:hobt_dict_detail' hobt_dict.pk %}" class="btn btn-primary">더보기</a>
         </div>
         <div class="card-footer text-muted">
-          추천수: {{ hobt_dict.hobt_dict_like.count }}
+          추천수: {{ hobt_dict.like.count }}
         </div>
       </div>
     {% empty %}
