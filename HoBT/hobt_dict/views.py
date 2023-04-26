@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.views import View
+from django.contrib.auth.decorators import user_passes_test
 
 from .models import HobtDict
 from .forms import HobtDictForm
@@ -23,6 +24,7 @@ def hobt_dict(request):
     if q:
         hobt_dict_list = hobt_dict_list.filter(
             Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q)| Q(qid__icontains=q)
+            | Q(small_category__icontains=q)| Q(big_category__icontains=q)| Q(appearance_date__icontains=q)
         ).distinct()
 
     paginator = Paginator(hobt_dict_list, 10)
@@ -51,6 +53,8 @@ class HobtDictCreateView(View):
         return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
 
 
+@login_required
+@user_passes_test(lambda u: u.is_staff or u == hobt_dict.author)
 def hobt_dict_modify(request, pk):
     """
     문제 수정
@@ -71,7 +75,11 @@ def hobt_dict_modify(request, pk):
             return redirect(hobt_dict)
     else:
         form = HobtDictForm(instance=hobt_dict)
-    return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
+    context = {
+        'form': form,
+        'qid': hobt_dict.qid,
+    }
+    return render(request, 'hobt_dict/hobt_dict_modify.html', context)
 
 
 @login_required(login_url='common:login')
@@ -90,24 +98,28 @@ def hobt_dict_delete(request, pk):
 
 @login_required(login_url='common:login')
 @require_POST
-def hobt_dict_like(request):
+def hobt_dict_like(request, pk):
     """
     문제 추천
     """
-    pk = request.POST.get('pk', None)
     hobt_dict = get_object_or_404(HobtDict, pk=pk)
-    hobt_dict.like.add(request.user)
-    return JsonResponse({'status': 'ok'})
+    if hobt_dict.like.filter(id=request.user.id).exists():
+        # 이미 추천한 경우
+        hobt_dict.like.remove(request.user)
+        message = '추천을 취소했습니다.'
+    else:
+        # 추천하지 않은 경우
+        hobt_dict.like.add(request.user)
+        message = '문제를 추천했습니다.'
+    context = {'like_count': hobt_dict.like.count(), 'message': message}
+    return JsonResponse(context)
 
 
-@login_required(login_url='common:login')
 def hobt_dict_detail(request, pk):
-    """
-    문제 상세보기
-    """
     hobt_dict = get_object_or_404(HobtDict, pk=pk)
     context = {'hobt_dict': hobt_dict}
     return render(request, 'hobt_dict/detail.html', context)
+
 
 
 def search(request):
@@ -121,6 +133,7 @@ def search(request):
     if q:
         hobt_dict_list = hobt_dict_list.filter(
             Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q) | Q(qid__icontains=q)
+            | Q(small_category__icontains=q) | Q(big_category__icontains=q) | Q(appearance_date__icontains=q)
         ).distinct()
 
     paginator = Paginator(hobt_dict_list, 10)

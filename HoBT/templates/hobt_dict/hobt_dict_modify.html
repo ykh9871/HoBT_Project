@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+  <style>
+    html, body {
+      height: 100%;
+    }
+    .content-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 70vh;
+    }
+    .card-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .form-group-inline {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .form-group-inline label {
+      flex-basis: 80px;
+      margin-right: 0px;
+    }
+    .form-group-inline .form-control {
+      flex: 1;
+    }
+    .form-group-mini{
+    width: 50%;
+    }
+    .form-group-big{
+    width: 100%;
+    }
+  </style>
+  <div class="content-container">
+    <div class="container mt-3" style="max-width: 1000px; width: 100%;">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title mb-0">{{ qid }}번 문제 수정</h3>
+            </div>
+            <div class="card-body">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="form-group-inline">
+                  <div class="form-group-mini">
+                      <label for="{{ form.answer.id_for_label }}">정답:</label>
+                      {{ form.answer }}
+                  </div>
+                  <div class="form-group-mini">
+                      <label for="{{ form.similar_answer.id_for_label }}">유사 답안:</label>
+                      {{ form.similar_answer }}
+                  </div>
+                </div>
+                <div class="form-group-inline">
+                    <div class="form-group-big">
+                        <label for="{{ form.content.id_for_label }}">문제 내용:</label>
+                        {{ form.content }}
+                    </div>
+                </div>
+                <div class="form-group-inline">
+                    <div class="form-group-big">
+                      <label for="{{ form.appearance_date.id_for_label }}">출제 유형:</label>
+                      {{ form.appearance_date }}
+                    </div>
+                </div>
+                <div class="form-group-inline">
+                    <div class="form-group-mini">
+                        <label for="{{ form.small_category.id_for_label }}">소분류:</label>
+                        {{ form.small_category }}
+                    </div>
+                    <div class="form-group-mini">
+                        <label for="{{ form.big_category.id_for_label }}">대분류:</label>
+                        {{ form.big_category }}
+                    </div>
+                </div>
+                </div>
+                <div class="form-group-inline">
+                    <div class="form-group-big">
+                      <label for="{{ form.note.id_for_label }}">비고:</label>
+                      {{ form.note }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">저장</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
