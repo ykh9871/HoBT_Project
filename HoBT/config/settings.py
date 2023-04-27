@@ -81,9 +81,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'hobt',
-        'USER': 'root',
-        'PASSWORD': 'qwer1234',
-        'HOST': 'localhost',
+        'USER': 'admin',
+        'PASSWORD': '1234qwer',
+        'HOST': 'database-1.cg3vesqevnrv.ap-northeast-2.rds.amazonaws.com',
         'PORT': '3306'
     }
 }

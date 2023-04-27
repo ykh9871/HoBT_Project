@@ -46,8 +46,8 @@
             <label for="judgement">당신이 입력한 답이 정답이라고 생각하시나요?</label>
             <p></p>
             <div>
-              <button id="judgement-button-1" type="button" class="btn btn-success" onclick="setJudgementValue('1'); showCongratulation(); showSubmitButton(); document.getElementById('submit-button').focus(); exam_number = 2;">정답 : 1</button>
-              <button id="judgement-button-2" type="button" class="btn btn-danger" onclick="setJudgementValue('2'); showRegret(); showSubmitButton(); document.getElementById('submit-button').focus(); exam_number = 2;">오답 : 2</button>
+              <button id="judgement-button-1" type="button" class="btn btn-success" onclick="setJudgementValue('1'); showCongratulation(); showSubmitButton(); document.getElementById('submit-button').focus();">정답 : 1</button>
+              <button id="judgement-button-2" type="button" class="btn btn-danger" onclick="setJudgementValue('2'); showRegret(); showSubmitButton(); document.getElementById('submit-button').focus();">오답 : 2</button>
             </div>
           </div>
           <input type="hidden" id="judgement" name="judgement" required>
@@ -64,14 +64,14 @@
         score = localStorage.setItem('score', {{ score }} + 5);
       </script>
       <h5 class="card-title">축하합니다!</h5>
-      <p class="card-text">현재 맞춘 문제 수는 {{ exam_number }}개입니다. {{ score }}다음 문제를 풀어보세요!<br>남은 문항 수: 1개</p>
+        <p class="card-text"><p id="correct_answer"></p><p id="correct_exam_number"></p></p>
     </div>
   </div>
 
   <div id="regret-message" class="card d-none bg-danger text-white">
     <div class="card-body text-left">
       <h5 class="card-title">유감입니다!</h5>
-      <p class="card-text">현재 맞춘 문제 수는 {{ exam_number }}개입니다. 다음 문제를 풀어보세요!<br>남은 문항 수: 1개</p>
+        <p class="card-text"><p id="wrong_answer"></p><p id="wrong_exam_number"></p></p>
     </div>
   </div>
 </div>
@@ -82,12 +82,20 @@
         document.getElementById('judgement').value = value;
       }
     }
-    function showCongratulation() {
+   function showCongratulation() {
   if (document.getElementById('congratulation-message').classList.contains('d-none')) {
     document.getElementById('congratulation-message').classList.remove('d-none');
     document.getElementById('regret-message').classList.add('d-none');
     document.getElementById('judgement-button-1').classList.add('d-none');
     document.getElementById('judgement-button-2').classList.remove('d-none');
+    correct_answer = parseInt(localStorage.getItem('correct_answer'));
+    total_score = parseInt(localStorage.getItem('total_score'));
+    if (correct_answer < 20) {
+      localStorage.setItem('correct_answer', correct_answer + 1);
+    }
+    if (total_score < 100) {
+      localStorage.setItem('total_score', total_score + 5);
+    }
   }
   document.getElementById('judgement-button-2').classList.add('d-none');
 }
@@ -143,13 +151,26 @@ document.getElementById('submit-button').addEventListener('click', function() {
   if ({{ problem_id }} < 20) {
     localStorage.setItem('exam_number', {{ problem_id }} + 1);
   } else {
-    localStorage.setItem('exam_number', 20);
+    localStorage.setItem('exam_number', 21);
   }
 
    // problem_id 값 증가
   var problemId = parseInt(document.getElementById('problem-id').value);
   document.getElementById('problem-id').value = problemId + 1;
+
 });
 
+    correct_answer = parseInt(localStorage.getItem('correct_answer'));
+    exam_number = parseInt(localStorage.getItem('exam_number'));
+    total_score = parseInt(localStorage.getItem('total_score'));
+    document.getElementById('correct_answer').innerHTML = `현재 맞춘 문제 수는 ${correct_answer+1}개입니다.<br>다음 문제를 풀어보세요!${total_score+5}점`
+    document.getElementById('wrong_answer').innerHTML = `현재 맞춘 문제 수는 ${correct_answer}개입니다.<br>다음 문제를 풀어보세요!${total_score}점`
+    document.getElementById('wrong_exam_number').innerHTML = `남은 문항 수: ${20-exam_number}개`
+    document.getElementById('correct_exam_number').innerHTML = `남은 문항 수: ${20-exam_number}개`
+
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      window.history.go(1);
+    };
   </script>
 {% endblock %}

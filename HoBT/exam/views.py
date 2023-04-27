@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Hobt1
+from django.http import HttpResponse
 
 
 
@@ -23,3 +24,6 @@ def exam_judge(request):
         'is_correct': is_correct,
     }
     return render(request, 'exam/exam_judge.html', context)
+
+def exam_result(request):
+    return render(request, 'exam/exam_result.html')

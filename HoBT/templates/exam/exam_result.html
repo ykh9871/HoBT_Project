@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-12">
+        <p id = 'total_score'></p>
+      </div>
+    </div>
+  </div>
+<script>
+  total_score = localStorage.getItem('total_score');
+  document.getElementById('total_score').innerHTML = `당신의 점수는 ${total_score}점입니다!`
+
+  if (total_score < 60) {
+    document.getElementById('result_message').innerHTML = '불합격입니다. 다시 도전하세요!';
+  } else if (total_score < 70) {
+    document.getElementById('result_message').innerHTML = '합격입니다. 다시 풀어보세요!';
+  } else {
+    document.getElementById('result_message').innerHTML = '축하합니다! 합격입니다!';
+  }
+
+  window.history.pushState(null, null, window.location.href);
+  window.onpopstate = function () {
+    window.history.go(1);
+  };
+</script>
+
+{% endblock %}
