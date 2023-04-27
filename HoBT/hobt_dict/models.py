@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from django.conf import settings
 from django.contrib.auth.models import User
 
 BIG_CATEGORY_CHOICES = [
@@ -54,7 +53,7 @@ class HobtDict(models.Model):
     appearance_date = models.CharField(
         verbose_name='출제 유형',
         max_length=255,
-        choices=APPEARANCE_DATE, # choices 속성에 정의한 카테고리 선택 사항 할당
+        choices=APPEARANCE_DATE,  # choices 속성에 정의한 카테고리 선택 사항 할당
         blank=True
     )
     small_category = models.CharField(verbose_name='소 분류', max_length=255, blank=True)
@@ -70,22 +69,29 @@ class HobtDict(models.Model):
     author = models.ForeignKey(User, on_delete=models.PROTECT, related_name='author_hobtdict')
     like = models.ManyToManyField(User, related_name='liker_hobtdict')
 
-    def __str__(self):
-        return self.content[:50]
-
     def get_absolute_url(self):
         return reverse('hobt_dict:hobt_dict_detail', args=[str(self.qid)])
 
 
 class Problem(models.Model):
-    qid = models.IntegerField(primary_key=True)
-    answer = models.TextField()
-    similar_answer = models.TextField()
-    content = models.TextField()
-    appearance_date = models.TextField()
-    small_category = models.TextField()
-    big_category = models.TextField()
-    note = models.TextField()
+    qid = models.AutoField(verbose_name='문제 번호', primary_key=True)
+    answer = models.CharField(verbose_name='정답', max_length=255)
+    similar_answer = models.CharField(verbose_name='유사 답안', max_length=255, blank=True)
+    content = models.TextField(verbose_name='문제 내용')
+    appearance_date = models.CharField(
+        verbose_name='출제 유형',
+        max_length=255,
+        choices=APPEARANCE_DATE,  # choices 속성에 정의한 카테고리 선택 사항 할당
+        blank=True
+    )
+    small_category = models.CharField(verbose_name='소 분류', max_length=255, blank=True)
+    big_category = models.CharField(
+        verbose_name='대 분류',
+        max_length=255,
+        choices=BIG_CATEGORY_CHOICES,  # choices 속성에 정의한 카테고리 선택 사항 할당
+        blank=True
+    )
+    note = models.TextField(verbose_name='비고', blank=True)
 
     class Meta:
         db_table = 'exam_problem'

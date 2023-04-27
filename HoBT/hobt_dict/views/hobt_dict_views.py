@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.views import View
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.admin.views.decorators import staff_member_required
 
 from ..models import HobtDict
 from ..forms import HobtDictForm
@@ -53,8 +53,7 @@ class HobtDictCreateView(View):
         return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
 
 
-@login_required
-@user_passes_test(lambda u: u.is_staff or u == hobt_dict.author)
+@staff_member_required
 def hobt_dict_modify(request, pk):
     """
     문제 수정

@@ -28,7 +28,7 @@ def add_problem(request):
             note=note
         )
         problem.save()
-        return redirect(reverse_lazy('exam:problem_list'))
+        return redirect(reverse_lazy('hobt_dict:problem_list'))
     return render(request, 'hobt_dict/add_problem.html')
 
 

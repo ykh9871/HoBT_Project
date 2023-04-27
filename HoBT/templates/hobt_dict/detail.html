@@ -68,7 +68,7 @@
                 추천을 하시려면 <a href="{% url 'common:login' %}?next={{ request.path }}">로그인</a>을 해주세요.
               </div>
               {% endif %}
-                {% if user == hobt_dict.author %}
+                {% if user.is_staff %}
                   <div class="mb-4">
                     <a href="{% url 'hobt_dict:hobt_dict_modify' pk=hobt_dict.pk %}" class="btn btn-sm btn-outline-secondary">수정</a>
                   </div>
