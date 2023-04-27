@@ -30,7 +30,11 @@ def hobt_dict(request):
     paginator = Paginator(hobt_dict_list, 10)
     hobt_dicts = paginator.get_page(page)
 
-    context = {'hobt_dicts': hobt_dicts, 'page': page, 'q': q}
+    start_index = max(1, hobt_dicts.number - 5)
+    end_index = min(start_index + 10, hobt_dicts.paginator.num_pages + 1)
+    page_range = range(start_index, end_index)
+
+    context = {'hobt_dicts': hobt_dicts, 'page': page, 'q': q, 'page_range': page_range}
     return render(request, 'hobt_dict/hobt_dict.html', context)
 
 
@@ -130,12 +134,16 @@ def search(request):
     hobt_dict_list = HobtDict.objects.order_by('-qid')
     if q:
         hobt_dict_list = hobt_dict_list.filter(
-            Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q) | Q(qid__icontains=q)
-            | Q(small_category__icontains=q) | Q(big_category__icontains=q) | Q(appearance_date__icontains=q)
+            Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q)| Q(qid__icontains=q)
+            | Q(small_category__icontains=q)| Q(big_category__icontains=q)| Q(appearance_date__icontains=q)
         ).distinct()
 
     paginator = Paginator(hobt_dict_list, 10)
     hobt_dicts = paginator.get_page(page)
 
-    context = {'hobt_dicts': hobt_dicts, 'page': page, 'q': q}
+    start_index = max(1, hobt_dicts.number - 5)
+    end_index = min(start_index + 10, hobt_dicts.paginator.num_pages + 1)
+    page_range = range(start_index, end_index)
+
+    context = {'hobt_dicts': hobt_dicts, 'page': page, 'q': q, 'page_range': page_range}
     return render(request, 'hobt_dict/hobt_dict.html', context)

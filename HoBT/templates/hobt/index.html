@@ -1,50 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<div class="d-flex justify-content-center align-items-center bg-sky-blue text-black">
-  <div class="container">
-    <div class="d-flex justify-content-center align-items-center bg-white text-black" style="box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); border-radius: 10px; padding: 50px; min-height: 800px;">
-      <div class="text-center d-flex flex-column justify-content-center" style="color: #333;">
-        <h1 style="font-size: 5rem; margin-top: -300px; color: #000;">최강 기출 호비티</h1>
-        <p class="mb-4" style="font-size: 1.5rem; line-height: 2; margin-bottom: 50px;">정보처리기사 실기 CBT, 일명 HoBT입니다!<br>지금 바로 풀어 보시고 자격증을 취득해보세요!</p>
-        <div class="mt-auto d-flex flex-row justify-content-center">
-        <a id="start-button" style="font-size: 2rem; margin-right: 30px;" href="{% url 'exam:exam' %}" class="btn btn-lg btn-primary"
-           onclick="localStorage.setItem('exam_number', 1), localStorage.setItem('total_score', 0),
-           localStorage.setItem('correct_answer', 0)">문제 풀러 가기</a>
-          {% if user.is_superuser %}
-          <a style="font-size: 2rem;" href="{% url 'hobt_dict:add_problem' %}" class="btn btn-lg btn-success">문제 만들러 가기</a>
+<div class="container-fluid" style="background-image: url('/static/bg.jpg'); background-size: cover; background-position: center center;">
+  <div class="row justify-content-center align-items-center" style="height: 92.5vh;">
+    <div class="col-md-6 text-center">
+      <p class="mb-4" style="font-size: 0.9rem; line-height: 2; margin-top: -50px; color: white;">정보처리기사 실기 CBT, 일명 HoBT입니다!<br>지금 바로 풀어 보시고 자격증을 취득해보세요!</p>
+      <h1 style="font-size: 6rem; font-family: Cambria, serif; color: white;">HoBT</h1>
+      <div class="mt-auto d-flex flex-row justify-content-center">
+          <a id="start-button" style="font-size: 1.5rem; margin-top: 250px; margin-right: 30px;" href="{% url 'exam:exam' %}" class="btn btn-lg btn-primary"
+             onclick="localStorage.setItem('exam_number', 1), localStorage.setItem('total_score', 0),
+             localStorage.setItem('correct_answer', 0)">문제 풀기</a>
+          {% if user.is_authenticated %}
+          <a style="font-size: 1.5rem; margin-top: 250px;" href="{% url 'hobt_dict:add_problem' %}" class="btn btn-lg btn-success">문제 만들기</a>
           {% endif %}
-        </div>
       </div>
     </div>
   </div>
 </div>
-<style>
-  .bg-sky-blue {
-    background-color: #87CEFA;
-  }
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-  }
-  .btn-primary:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
-  }
-  .btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-  }
-  .btn-success:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-  }
-  .container {
-    width: 80%;
-    max-width: 800px;
-  }
-</style>
 <script>
   window.onload = function() {
    document.getElementById('start-button').focus();
