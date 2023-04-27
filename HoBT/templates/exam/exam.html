@@ -1,7 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="container my-5" style="font-size: 110%;">
+  <style>
+  .btn {
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
+  }
+  body {
+    background-color: #f2f2f2;
+  }
+</style>
+  <div class="container my-5" style="font-size: 130%;">
     <div class="row">
       <div class="d-flex justify-content-between">
         <h2 class="mr-auto">문제 리스트</h2>
@@ -14,16 +24,16 @@
       <div class="col-12 my-3 problem-card" id="{{ problem.qid }}" {% if problem.qid != current_problem_id %}style="display:none"{% endif %}>
           <div class="card" style="border: 1px solid black;">
             <div class="card-body">
-              <h5 class="card-title">{{ problem.qid }}번 문제</h5>
+              <h4 class="card-title">{{ problem.qid }}번 문제</h4>
               <p class="card-text">출제연도 : {{ problem.appearance_date }}<br>
               문제대분류 : {{ problem.big_category }}<br>
-              문제소분류 : {{ problem.small_category }}<br></p>
-              <p class="card-text">문제 : {{ problem.content }}</p><br>
+              문제소분류 : {{ problem.small_category }}<br></p><br>
+              <p class="card-text">문제 : {{ problem.content|safe }}  </p><br>
               <form action="{% url 'exam:exam_judge' %}" method="get">
                 {% csrf_token %}
-                <div class="form-group d-flex flex-row align-items-start mb-3 gap-2">
+                <div class="form-group d-flex flex-row align-items-start my-0 gap-2">
                   <label for="answer{{ problem.qid }}">정답 :</label>
-                  <input tabindex="1" type="text" class="form-control ml-2" id="answer{{ problem.qid }}" name="answer" style="width: 50%; border: 1px solid black;" >
+                  <input style="width: 700px; height: 50px; font-size: 110%; border: 1px solid black;" tabindex="1" type="text" class="form-control ml-2" id="answer{{ problem.qid }}" name="answer">
                   <button tabindex="2" type="submit" class="btn btn-primary ml-2 align-self-start">제출</button>
                   <input type="hidden" name="problem_id" value="{{ problem.qid }}">
                 </div>

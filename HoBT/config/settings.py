@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'exam',
-    'hobt_dict'
+    'hobt_dict',
 ]
 
 MIDDLEWARE = [

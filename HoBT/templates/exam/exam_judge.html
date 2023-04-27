@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-      <div class="container my-5">
+<style>
+  .btn {
+  width: 120px;
+  height: 50px;
+  font-size: 20px;
+  }
+  body {
+    background-color: #f2f2f2;
+  }
+</style>
+<div class="container my-5">
     <div class="row">
       <div class="col-12 mb-3">
         <h2>문제 결과</h2>
@@ -11,8 +20,8 @@
         <div class="row">
           <div class="col-12 col-md-4 mb-3">
             <div class="card text-center">
-              <div class="card-body">
-                <h5 class="card-title">작성 답안</h5>
+               <div class="card-body" style=" border-radius: 5px; background-color: lightyellow; font-size:140%;">
+                <h4 class="card-title">작성 답안</h4><hr>
                 {% if first_answer %}
                 <p class="card-text">{{ first_answer }}</p>
                 {% else %}
@@ -23,27 +32,27 @@
           </div>
           <div class="col-12 col-md-4 mb-3">
             <div class="card text-center border-{{ answer_status }}">
-              <div class="card-body">
-                <h5 class="card-title">실제 답안</h5>
+              <div class="card-body" style=" border-radius: 5px; background-color: lightyellow; font-size:140%;">
+                <h4 class="card-title">실제 답안</h4><hr>
                 <p class="card-text">{{ answer }}</p>
               </div>
             </div>
           </div>
           <div class="col-12 col-md-4 mb-3">
             <div class="card text-center">
-              <div class="card-body">
-                <h5 class="card-title">유사 답안</h5>
+              <div class="card-body" style=" border-radius: 5px; background-color: lightyellow; font-size:140%;">
+                <h4 class="card-title">유사 답안</h4><hr>
                 <p class="card-text">{{ similar_answer }}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-12 mt-5">
+      <div class="col-12 mt-2">
         <form id="judgement-form" action="{% url 'exam:exam' %}" method="get">
           {% csrf_token %}
-          <div class="form-group">
-            <label for="judgement">당신이 입력한 답이 정답이라고 생각하시나요?</label>
+          <div class="form-group" style="text-align:center;">
+            <label for="judgement" style="font-size:1.5rem;">당신이 입력한 답이 정답이라고 생각하시나요?</label>
             <p></p>
             <div>
               <button id="judgement-button-1" type="button" class="btn btn-success" onclick="setJudgementValue('1'); showCongratulation(); showSubmitButton(); document.getElementById('submit-button').focus();">정답 : 1</button>
@@ -52,30 +61,30 @@
           </div>
           <input type="hidden" id="judgement" name="judgement" required>
           <input type="hidden" name="problem_id" value="{{ problem_id }}">
-          <input id="submit-button" class="btn btn-primary mt-3" type="submit" value="제출" style="display: none;">
+          <input id="submit-button" class="btn btn-primary mt-3" type="submit" value="제출" style="display: none; margin: auto;">
         </form>
        <div>
         <form id="result-form" action="{% url 'exam:exam_result' %}" method="get">
-          <button tabindex="1" id="final-button" type="submit" class="btn btn-primary ml-2" style="display: none;">채점하기(tab을 눌러보세요!)</button>
+          <button tabindex="1" id="final-button" type="submit" class="btn btn-primary ml-2" style="display: none; margin: 0 auto; width: auto;">채점하기(tab을 눌러보세요!)</button>
         </form>
       </div>
       </div>
     </div>
   </div>
- <div class="container" style="max-width: 1300px;">
+ <div class="container" style="max-width: 1300px; font-size: 140%; text-align:center;">
   <div id="congratulation-message" class="card d-none bg-success text-white">
     <div class="card-body text-left">
       <script>
         score = localStorage.setItem('score', {{ score }} + 5);
       </script>
-      <h5 class="card-title">축하합니다!</h5>
+      <h4 class="card-title">축하합니다!</h4>
         <p class="card-text"><p id="correct_answer"></p><p id="correct_exam_number"></p></p>
     </div>
   </div>
 
   <div id="regret-message" class="card d-none bg-danger text-white">
     <div class="card-body text-left">
-      <h5 class="card-title">유감입니다!</h5>
+      <h4 class="card-title">유감입니다!</h4>
         <p class="card-text"><p id="wrong_answer"></p><p id="wrong_exam_number"></p></p>
     </div>
   </div>

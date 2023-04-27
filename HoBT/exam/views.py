@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Hobt1
+from .utils import wrap_text
 from django.http import HttpResponse
-
-
 
 def exam(request):
     hobt_1_list = Hobt1.objects.all()
+    for problem in hobt_1_list:
+        problem.content = problem.content.replace('.', '.<br>').replace('?', '?<br>')
     return render(request, 'exam/exam.html', {'hobt_1': hobt_1_list})
 
 
@@ -27,3 +28,4 @@ def exam_judge(request):
 
 def exam_result(request):
     return render(request, 'exam/exam_result.html')
+
