@@ -13,4 +13,5 @@ urlpatterns = [
     path('add_problem/', views.add_problem, name='add_problem'),
     path('problem_list/', views.show_problems, name='problem_list'),
     path('add_selected_problems/', views.add_selected_problems, name='add_selected_problems'),
+    path('delete_selected_problems/', views.delete_selected_problems, name='delete_selected_problems'), # 체크박스 선택 항목 삭제
 ]

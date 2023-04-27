@@ -5,7 +5,7 @@
     <h2 class="mb-4">
       <label>
         <input type="checkbox" id="select-all-checkbox">
-        관리자 문제 리스트
+        문제 리스트
       </label>
     </h2>
     <form method="post" action="{% url 'hobt_dict:add_selected_problems' %}">
@@ -15,11 +15,11 @@
           <tr>
             <th>문제 번호</th>
             <th>문제 내용</th>
-            <th>문제 정답</th>
-            <th>문제 유사 정답</th>
-            <th>출제 연도</th>
-            <th>소 분류</th>
-            <th>대 분류</th>
+            <th>정답</th>
+            <th>유사 답안</th>
+            <th>출제 유형</th>
+            <th>소분류</th>
+            <th>대분류</th>
             <th>비고</th>
           </tr>
         </thead>
@@ -45,16 +45,20 @@
           {% endfor %}
         </tbody>
       </table>
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center gap-3 mb-3">
         <a href="{% url 'hobt_dict:add_problem' %}" class="btn btn-secondary">문제 출제하기</a>
         <a href="{% url 'hobt:index' %}" class="btn btn-secondary">메인으로</a>
+        <!-- 선택한 항목 삭제 버튼 -->
+        <button type="button" id="delete-selected-problems-btn" class="btn btn-danger">선택한 항목 삭제</button>
       </div>
       <!-- 최종 제출 버튼 -->
       <div class="d-flex justify-content-center">
+        {% if user.is_staff %}
         <form method="post" action="{% url 'hobt_dict:add_selected_problems' %}">
           {% csrf_token %}
           <button type="submit" class="btn btn-success">최종 제출</button>
         </form>
+        {% endif %}
       </div>
     </form>
   </div>
@@ -72,5 +76,50 @@
         selectedCheckboxes[i].checked = selectAllCheckbox.checked;
       }
     });
+
+    // 선택한 항목 삭제 버튼 요소
+    const deleteSelectedProblemsBtn = document.querySelector('#delete-selected-problems-btn');
+
+    // 선택한 항목들을 삭제하는 함수
+    function deleteSelectedProblems() {
+      // 선택한 문제들의 체크박스 요소들
+      const selectedCheckboxes = document.querySelectorAll('input[name="selected_problems"]:checked');
+      // 선택한 문제들의 id 목록
+      const selectedProblemIds = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+
+      if (selectedProblemIds.length > 0) {
+        // 서버에 선택한 문제들을 삭제하는 요청 보내기
+        fetch('{% url "hobt_dict:delete_selected_problems" %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+          body: JSON.stringify({
+            selected_problem_ids: selectedProblemIds
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+            // 선택한 문제들이 성공적으로 삭제됐을 때, 화면에서 삭제하기
+            selectedCheckboxes.forEach(checkbox => {
+              checkbox.closest('tr').remove();
+            });
+            alert('선택한 항목이 삭제됐습니다.');
+          } else {
+            alert('문제 삭제에 실패했습니다.');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          alert('문제 삭제에 실패했습니다.');
+        });
+      } else {
+        alert('삭제할 항목을 선택해주세요.');
+      }
+    }
+
+    // "선택한 항목 삭제" 버튼을 클릭했을 때, 선택한 항목들을 삭제하는 함수 실행
+    deleteSelectedProblemsBtn.addEventListener('click', deleteSelectedProblems);
   </script>
 {% endblock %}

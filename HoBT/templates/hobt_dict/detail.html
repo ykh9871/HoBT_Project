@@ -83,32 +83,31 @@
 {% block script %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).on('click', '.recommend', function(e) {
-  e.preventDefault();
-  const button = $(this);
-  const pk = button.data('pk');
-  const likeCountSpan = button.find('.like-count');
-  $.ajax({
-    url: "{% url 'hobt_dict:hobt_dict_like' pk=hobt_dict.pk %}".replace('pk', pk),
-    method: 'POST',
-    data: {
-      'pk': pk,
-      'csrfmiddlewaretoken': '{{ csrf_token }}'
-    },
-    success: function(response) {
-      likeCountSpan.html(response.like_count);
-      alert(response.message);
-    },
-    error: function(xhr, errmsg, err) {
-      if (xhr.status === 403) {
-        alert('로그인이 필요한 기능입니다.');
-      } else {
-        alert('Error occurred.');
-        console.log(xhr.status + ': ' + xhr.responseText);
-      }
-    }
-  });
-});
-
+    $(document).on('click', '.recommend', function(e) {
+      e.preventDefault();
+      const button = $(this);
+      const pk = button.data('pk');
+      const likeCountSpan = button.find('.like-count');
+      $.ajax({
+        url: "{% url 'hobt_dict:hobt_dict_like' pk=hobt_dict.pk %}".replace('pk', pk),
+        method: 'POST',
+        data: {
+          'pk': pk,
+          'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        success: function(response) {
+          likeCountSpan.html(response.like_count);
+          alert(response.message);
+        },
+        error: function(xhr, errmsg, err) {
+          if (xhr.status === 403) {
+            alert('로그인이 필요한 기능입니다.');
+          } else {
+            alert('Error occurred.');
+            console.log(xhr.status + ': ' + xhr.responseText);
+          }
+        }
+      });
+    });
 </script>
 {% endblock %}

@@ -120,7 +120,6 @@ def hobt_dict_detail(request, pk):
     return render(request, 'hobt_dict/detail.html', context)
 
 
-
 def search(request):
     """
     문제 검색 기능

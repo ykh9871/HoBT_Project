@@ -19,7 +19,7 @@ BIG_CATEGORY_CHOICES = [
     # 추가 카테고리를 필요에 따라 추가하세요.
 ]
 
-APPEARANCE_DATE = [
+APPEARANCE_DATE_CHOICES = [
     ('2020년 1회 실기', '2020년 1회 실기'),
     ('2020년 2회 실기', '2020년 2회 실기'),
     ('2020년 3회 실기', '2020년 3회 실기'),
@@ -53,7 +53,7 @@ class HobtDict(models.Model):
     appearance_date = models.CharField(
         verbose_name='출제 유형',
         max_length=255,
-        choices=APPEARANCE_DATE,  # choices 속성에 정의한 카테고리 선택 사항 할당
+        choices=APPEARANCE_DATE_CHOICES,  # choices 속성에 정의한 카테고리 선택 사항 할당
         blank=True
     )
     small_category = models.CharField(verbose_name='소 분류', max_length=255, blank=True)
@@ -81,7 +81,7 @@ class Problem(models.Model):
     appearance_date = models.CharField(
         verbose_name='출제 유형',
         max_length=255,
-        choices=APPEARANCE_DATE,  # choices 속성에 정의한 카테고리 선택 사항 할당
+        choices=APPEARANCE_DATE_CHOICES,  # choices 속성에 정의한 카테고리 선택 사항 할당
         blank=True
     )
     small_category = models.CharField(verbose_name='소 분류', max_length=255, blank=True)

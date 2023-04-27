@@ -1,53 +1,96 @@
 {% extends 'base.html' %}
-
 {% block content %}
-
-<div class="container my-5">
-  <h2 class="mb-4">문제 입력</h2>
-  <form method="post">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="qid">문제 번호:</label>
-          <input type="number" class="form-control" id="qid" name="qid" required>
-        </div>
-        <div class="form-group">
-          <label for="answer">문제 정답:</label>
-          <input type="text" class="form-control" id="answer" name="answer" required>
-        </div>
-        <div class="form-group">
-          <label for="similar_answer">문제 유사 정답:</label>
-          <textarea class="form-control" id="similar_answer" name="similar_answer"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="content">문제 내용:</label>
-          <textarea class="form-control" id="content" name="content" required></textarea>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="appearance_date">출제 연도:</label>
-          <input type="text" class="form-control" id="appearance_date" name="appearance_date" required>
-        </div>
-        <div class="form-group">
-          <label for="small_category">문제 소 분류:</label>
-          <input type="text" class="form-control" id="small_category" name="small_category" required>
-        </div>
-        <div class="form-group">
-          <label for="big_category">문제 대 분류:</label>
-          <input type="text" class="form-control" id="big_category" name="big_category" required>
-        </div>
-        <div class="form-group">
-          <label for="note">비고:</label>
-          <textarea class="form-control" id="note" name="note"></textarea>
+  <style>
+    html, body {
+      height: 100%;
+    }
+    .content-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 70vh;
+    }
+    .card-header {
+      background-color: #f8f9fa;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .form-group-inline {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .form-group-inline label {
+      flex-basis: 80px;
+      margin-right: 0px;
+    }
+    .form-group-inline .form-control {
+      flex: 1;
+    }
+    .form-group-mini{
+    width: 50%;
+    }
+    .form-group-big{
+    width: 100%;
+    }
+  </style>
+  <div class="content-container">
+    <div class="container mt-3" style="max-width: 1000px; width: 100%;">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title mb-0">문제 입력</h3>
+            </div>
+            <div class="card-body">
+              <form method="post">
+                {% csrf_token %}
+                    <div class="form-group-inline">
+                        <div class="form-group-mini">
+                          <label for="answer">정답:</label>
+                          <input type="text" class="form-control" id="answer" name="answer" required>
+                        </div>
+                        <div class="form-group-mini">
+                          <label for="similar_answer">유사 답안:</label>
+                          <input class="form-control" id="similar_answer" name="similar_answer" required>
+                        </div>
+                    </div>
+                    <div class="form-group-inline">
+                        <div class="form-group-big">
+                          <label for="content">문제 내용:</label>
+                          <textarea class="form-control" id="content" name="content" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group-inline">
+                        <div class="form-group-big">
+                          <label for="appearance_date">출제 유형:</label>
+                          {{ form.appearance_date }}
+                        </div>
+                    </div>
+                    <div class="form-group-inline">
+                        <div class="form-group-mini">
+                          <label for="small_category">소분류:</label>
+                          <input type="text" class="form-control" id="small_category" name="small_category" required>
+                        </div>
+                        <div class="form-group-mini">
+                          <label for="big_category">대분류:</label>
+                          {{ form.big_category }}
+                        </div>
+                    </div>
+                    <div class="form-group-inline">
+                        <div class="form-group-big">
+                          <label for="note">비고:</label>
+                          <textarea class="form-control" id="note" name="note"></textarea>
+                        </div>
+                    </div>
+                <div class="btn-group my-3" role="group">
+                  <button type="submit" formaction="{% url 'hobt_dict:add_problem' %}" class="btn btn-primary mr-3">문제 추가</button>
+                  <a href="{% url 'hobt_dict:problem_list' %}" class="btn btn-danger">문제 리스트</a>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="btn-group my-3" role="group">
-      <button type="submit" formaction="{% url 'hobt_dict:add_problem' %}" class="btn btn-primary mr-3">문제 추가</button>
-      <a href="{% url 'hobt_dict:problem_list' %}" class="btn btn-danger">문제 리스트</a>
-    </div>
-  </form>
-</div>
+  </div>
 {% endblock %}

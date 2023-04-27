@@ -1,35 +1,23 @@
-from ..models import Problem
-
-
 from django.urls import reverse_lazy
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+import json
+
+from ..models import Problem
+from ..forms import ProblemForm
 
 
 def add_problem(request):
     if request.method == 'POST':
-        qid = request.POST.get('qid')
-        answer = request.POST.get('answer')
-        similar_answer = request.POST.get('similar_answer')
-        content = request.POST.get('content')
-        appearance_date = request.POST.get('appearance_date')
-        small_category = request.POST.get('small_category')
-        big_category = request.POST.get('big_category')
-        note = request.POST.get('note')
-        problem = Problem(
-            qid=qid,
-            answer=answer,
-            similar_answer=similar_answer,
-            content=content,
-            appearance_date=appearance_date,
-            small_category=small_category,
-            big_category=big_category,
-            note=note
-        )
-        problem.save()
-        return redirect(reverse_lazy('hobt_dict:problem_list'))
-    return render(request, 'hobt_dict/add_problem.html')
+        form = ProblemForm(request.POST)
+        if form.is_valid():
+            problem = form.save()
+            return redirect(reverse_lazy('hobt_dict:problem_list'))
+    else:
+        form = ProblemForm()
+    return render(request, 'hobt_dict/add_problem.html', {'form': form})
 
 
 def show_problems(request):
@@ -49,3 +37,14 @@ def add_selected_problems(request):
             problem.save()
         return redirect(reverse_lazy('hobt_dict:problem_list'))
     return redirect(reverse_lazy('hobt:index'))
+
+
+def delete_selected_problems(request):
+    if request.method == 'POST':
+        selected_problem_ids = json.loads(request.body)['selected_problem_ids'] # 요청 데이터에서 선택한 문제들의 ID 목록 가져오기
+        problems_to_delete = Problem.objects.filter(qid__in=selected_problem_ids) # 선택한 문제들 필터링
+        problems_to_delete.delete() # 선택한 문제들 삭제하기
+
+        return JsonResponse({'success': True}) # 성공적으로 삭제됐음을 응답으로 보내기
+
+    return JsonResponse({'success': False}) # POST 요청이 아니면 실패로 응답하기
