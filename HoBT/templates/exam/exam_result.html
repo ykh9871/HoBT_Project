@@ -1,29 +1,52 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="container my-5">
-    <div class="row">
-      <div class="col-12">
-        <p id = 'total_score'></p>
+  <div class="card mt-5">
+  <div class="card-body">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 text-center">
+          <h2 class="mb-4">당신의 점수는 <span id="total_score">{{ total_score }}점</span>입니다!</h2>
+          <h4 id="result_message"></h4>
+        </div>
       </div>
     </div>
   </div>
-<script>
-  total_score = localStorage.getItem('total_score');
-  document.getElementById('total_score').innerHTML = `당신의 점수는 ${total_score}점입니다!`
+</div>
+<div class="row text-center">
+  <div class="col-12 col-md-4">
+    <button class="btn btn-primary btn-block mb-2" onclick="restartExam()">다시 풀기</button>
+  </div>
+  <div class="col-12 col-md-4">
+    <button class="btn btn-danger btn-block mb-2" onclick="exitExam()">메인 메뉴</button>
+  </div>
+</div>
+  <script>
+    function restartExam() {
+      localStorage.setItem('exam_number', 1);
+      localStorage.setItem('total_score', 0);
+      localStorage.setItem('correct_answer', 0);
+      window.location.href = "{% url 'exam:exam' %}";
+    }
 
-  if (total_score < 60) {
-    document.getElementById('result_message').innerHTML = '불합격입니다. 다시 도전하세요!';
-  } else if (total_score < 70) {
-    document.getElementById('result_message').innerHTML = '합격입니다. 다시 풀어보세요!';
-  } else {
-    document.getElementById('result_message').innerHTML = '축하합니다! 합격입니다!';
-  }
+    function exitExam() {
+      window.location.href = "{% url 'index' %}";
+    }
 
-  window.history.pushState(null, null, window.location.href);
-  window.onpopstate = function () {
-    window.history.go(1);
-  };
-</script>
+    var total_score = localStorage.getItem('total_score');
+    document.getElementById('total_score').innerHTML = total_score;
 
+    if (total_score < 60) {
+      document.getElementById('result_message').innerHTML = '불합격입니다. 다시 도전하세요!';
+    } else if (total_score < 70) {
+      document.getElementById('result_message').innerHTML = '합격입니다. 다시 풀어보세요!';
+    } else {
+      document.getElementById('result_message').innerHTML = '축하합니다! 합격입니다!';
+    }
+
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function() {
+      window.history.go(1);
+    };
+  </script>
 {% endblock %}

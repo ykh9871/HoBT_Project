@@ -54,6 +54,11 @@
           <input type="hidden" name="problem_id" value="{{ problem_id }}">
           <input id="submit-button" class="btn btn-primary mt-3" type="submit" value="제출" style="display: none;">
         </form>
+       <div>
+        <form id="result-form" action="{% url 'exam:exam_result' %}" method="get">
+          <button tabindex="1" id="final-button" type="submit" class="btn btn-primary ml-2" style="display: none;">채점하기(tab을 눌러보세요!)</button>
+        </form>
+      </div>
       </div>
     </div>
   </div>
@@ -111,7 +116,11 @@ function showRegret() {
 }
 
 function showSubmitButton() {
-  document.getElementById('submit-button').style.display = 'block';
+  if ({{ problem_id }} === 20) {
+    document.getElementById('final-button').style.display = 'block';
+  } else {
+    document.getElementById('submit-button').style.display = 'block';
+  }
 }
 
 document.addEventListener('keydown', function(event) {
@@ -151,7 +160,7 @@ document.getElementById('submit-button').addEventListener('click', function() {
   if ({{ problem_id }} < 20) {
     localStorage.setItem('exam_number', {{ problem_id }} + 1);
   } else {
-    localStorage.setItem('exam_number', 21);
+    localStorage.setItem('exam_number', 20);
   }
 
    // problem_id 값 증가
@@ -163,8 +172,8 @@ document.getElementById('submit-button').addEventListener('click', function() {
     correct_answer = parseInt(localStorage.getItem('correct_answer'));
     exam_number = parseInt(localStorage.getItem('exam_number'));
     total_score = parseInt(localStorage.getItem('total_score'));
-    document.getElementById('correct_answer').innerHTML = `현재 맞춘 문제 수는 ${correct_answer+1}개입니다.<br>다음 문제를 풀어보세요!${total_score+5}점`
-    document.getElementById('wrong_answer').innerHTML = `현재 맞춘 문제 수는 ${correct_answer}개입니다.<br>다음 문제를 풀어보세요!${total_score}점`
+    document.getElementById('correct_answer').innerHTML = `현재 맞춘 문제 수는 ${correct_answer+1}개입니다.<br>다음 문제를 풀어보세요!`
+    document.getElementById('wrong_answer').innerHTML = `현재 맞춘 문제 수는 ${correct_answer}개입니다.<br>다음 문제를 풀어보세요!`
     document.getElementById('wrong_exam_number').innerHTML = `남은 문항 수: ${20-exam_number}개`
     document.getElementById('correct_exam_number').innerHTML = `남은 문항 수: ${20-exam_number}개`
 
