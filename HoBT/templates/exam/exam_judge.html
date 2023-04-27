@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  <div class="container my-5">
+      <div class="container my-5">
     <div class="row">
       <div class="col-12 mb-3">
         <h2>문제 결과</h2>
@@ -13,7 +13,11 @@
             <div class="card text-center">
               <div class="card-body">
                 <h5 class="card-title">작성 답안</h5>
+                {% if first_answer %}
                 <p class="card-text">{{ first_answer }}</p>
+                {% else %}
+                <p class="card-text">없음</p>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -36,15 +40,116 @@
         </div>
       </div>
       <div class="col-12 mt-5">
-        <form action="{% url 'exam:exam' %}" method="get">
+        <form id="judgement-form" action="{% url 'exam:exam' %}" method="get">
           {% csrf_token %}
           <div class="form-group">
-            <label for="judgement">평가 결과를 입력해주세요. (정답: 1, 오답: 2)</label>
-            <input type="text" class="form-control" id="judgement" name="judgement" required>
+            <label for="judgement">당신이 입력한 답이 정답이라고 생각하시나요?</label>
+            <p></p>
+            <div>
+              <button id="judgement-button-1" type="button" class="btn btn-success" onclick="setJudgementValue('1'); showCongratulation(); showSubmitButton(); document.getElementById('submit-button').focus(); exam_number = 2;">정답 : 1</button>
+              <button id="judgement-button-2" type="button" class="btn btn-danger" onclick="setJudgementValue('2'); showRegret(); showSubmitButton(); document.getElementById('submit-button').focus(); exam_number = 2;">오답 : 2</button>
+            </div>
           </div>
-{#          <button type="submit" class="btn btn-primary">제출</button>#}
+          <input type="hidden" id="judgement" name="judgement" required>
+          <input type="hidden" name="problem_id" value="{{ problem_id }}">
+          <input id="submit-button" class="btn btn-primary mt-3" type="submit" value="제출" style="display: none;">
         </form>
       </div>
     </div>
   </div>
+ <div class="container" style="max-width: 1300px;">
+  <div id="congratulation-message" class="card d-none bg-success text-white">
+    <div class="card-body text-left">
+      <script>
+        score = localStorage.setItem('score', {{ score }} + 5);
+      </script>
+      <h5 class="card-title">축하합니다!</h5>
+      <p class="card-text">현재 맞춘 문제 수는 {{ exam_number }}개입니다. {{ score }}다음 문제를 풀어보세요!<br>남은 문항 수: 1개</p>
+    </div>
+  </div>
+
+  <div id="regret-message" class="card d-none bg-danger text-white">
+    <div class="card-body text-left">
+      <h5 class="card-title">유감입니다!</h5>
+      <p class="card-text">현재 맞춘 문제 수는 {{ exam_number }}개입니다. 다음 문제를 풀어보세요!<br>남은 문항 수: 1개</p>
+    </div>
+  </div>
+</div>
+
+  <script>
+    function setJudgementValue(value) {
+      if (!document.getElementById('judgement-button-1').classList.contains('d-none') && !document.getElementById('judgement-button-2').classList.contains('d-none')) {
+        document.getElementById('judgement').value = value;
+      }
+    }
+    function showCongratulation() {
+  if (document.getElementById('congratulation-message').classList.contains('d-none')) {
+    document.getElementById('congratulation-message').classList.remove('d-none');
+    document.getElementById('regret-message').classList.add('d-none');
+    document.getElementById('judgement-button-1').classList.add('d-none');
+    document.getElementById('judgement-button-2').classList.remove('d-none');
+  }
+  document.getElementById('judgement-button-2').classList.add('d-none');
+}
+
+function showRegret() {
+  if (document.getElementById('regret-message').classList.contains('d-none')) {
+    document.getElementById('regret-message').classList.remove('d-none');
+    document.getElementById('congratulation-message').classList.add('d-none');
+    document.getElementById('judgement-button-2').classList.add('d-none');
+    document.getElementById('judgement-button-1').classList.remove('d-none');
+  }
+  document.getElementById('judgement-button-1').classList.add('d-none');
+}
+
+function showSubmitButton() {
+  document.getElementById('submit-button').style.display = 'block';
+}
+
+document.addEventListener('keydown', function(event) {
+  if (event.code === 'Digit1' && !document.getElementById('judgement-button-1').classList.contains('d-none')) {
+    setJudgementValue('1');
+    showCongratulation();
+    showSubmitButton();
+    document.getElementById('submit-button').focus();
+    event.preventDefault();
+  } else if (event.code === 'Digit2' && !document.getElementById('judgement-button-2').classList.contains('d-none')) {
+    setJudgementValue('2');
+    showRegret();
+    showSubmitButton();
+    document.getElementById('submit-button').focus();
+    event.preventDefault();
+  }
+});
+
+document.getElementById('judgement-button-1').addEventListener('click', function() {
+  setJudgementValue('1');
+  showCongratulation();
+  showSubmitButton();
+  document.getElementById('submit-button').focus();
+  document.getElementById('judgement-button-2').classList.add('d-none');
+});
+
+document.getElementById('judgement-button-2').addEventListener('click', function() {
+  setJudgementValue('2');
+  showRegret();
+  showSubmitButton();
+  document.getElementById('submit-button').focus();
+  document.getElementById('judgement-button-1').classList.add('d-none');
+});
+
+document.getElementById('submit-button').addEventListener('click', function() {
+  // localStorage 값 증가
+  if ({{ problem_id }} < 20) {
+    localStorage.setItem('exam_number', {{ problem_id }} + 1);
+  } else {
+    localStorage.setItem('exam_number', 20);
+  }
+
+   // problem_id 값 증가
+  var problemId = parseInt(document.getElementById('problem-id').value);
+  document.getElementById('problem-id').value = problemId + 1;
+});
+
+  </script>
 {% endblock %}

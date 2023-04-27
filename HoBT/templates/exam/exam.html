@@ -1,23 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-  <div class="container my-5">
+  <div class="container my-5" style="font-size: 110%;">
     <div class="row">
-      <div class="col-12 mb-3">
-        <h2>문제 리스트</h2>
-      </div>
       {% for problem in hobt_1 %}
-        <div class="col-12 my-3 problem-card" id="{{ problem.qid }}" {% if problem.qid != 1 %}style="display:none"{% endif %}>
-          <div class="card">
+      <div class="col-12 my-3 problem-card" id="{{ problem.qid }}" {% if problem.qid != current_problem_id %}style="display:none"{% endif %}>
+          <div class="card" style="border: 1px solid black;">
             <div class="card-body">
-              <h5 class="card-title">문제 {{ problem.qid }}</h5>
-              <p class="card-text">{{ problem.content }}</p>
+              <h5 class="card-title">{{ problem.qid }}번 문제</h5>
+              <p class="card-text">출제연도 : {{ problem.appearance_date }}<br>
+              문제대분류 : {{ problem.big_category }}<br>
+              문제소분류 : {{ problem.small_category }}<br></p>
+              <p class="card-text">문제 : {{ problem.content }}</p><br>
               <form action="{% url 'exam:exam_judge' %}" method="get">
                 {% csrf_token %}
                 <div class="form-group d-flex flex-row align-items-start mb-3">
                   <label for="answer{{ problem.qid }}">정답 :</label>
-                  <input type="text" class="form-control ml-2" id="answer{{ problem.qid }}" name="answer" style="width: 50%;" autofocus>
+                  <input type="text" class="form-control ml-2" id="answer{{ problem.qid }}" name="answer" style="width: 50%; border: 1px solid black;" >
                   <button type="submit" class="btn btn-primary ml-2 align-self-start">제출</button>
                   <input type="hidden" name="problem_id" value="{{ problem.qid }}">
                 </div>
@@ -31,26 +30,67 @@
       {% endfor %}
       <div class="col-12 mt-3 d-flex justify-content-center">
         {% for problem in hobt_1 %}
-          <a href="#{{ problem.qid }}" class="btn btn-primary mx-2" onclick="showProblem('{{ problem.qid }}')">{{ problem.qid }}</a>
+          <button class="btn btn-primary mx-2{% if problem.qid == button_num %} active{% endif %}" onclick="showProblem('{{ problem.qid }}'); setRedirectUrl('{{ problem.qid }}'); setActiveButton('{{ problem.qid }}')">
+            <span class="btn-number{% if problem.qid == button_num %} active{% endif %}" {% if problem.qid == button_num %} autofocus {% endif %}>{{ problem.qid }}</span>
+          </button>
         {% endfor %}
       </div>
     </div>
   </div>
   <script>
-    function showProblem(id) {
-      var problemCards = document.getElementsByClassName('problem-card');
-      for (var i = 0; i < problemCards.length; i++) {
-        if (problemCards[i].getAttribute('id') == id) {
-          problemCards[i].style.display = 'block';
-        } else {
-          problemCards[i].style.display = 'none';
-        }
+  var redirectUrl = '{% url "exam:exam" %}';
+  var button_num = localStorage.getItem('exam_number');
+
+  function setRedirectUrl(problemId) {
+    redirectUrl = '{% url "exam:exam" %}?exam_number=' + problemId;
+  }
+
+  function showProblem(id) {
+    var problemCards = document.getElementsByClassName('problem-card');
+    for (var i = 0; i < problemCards.length; i++) {
+      if (problemCards[i].getAttribute('id') == id) {
+        problemCards[i].style.display = 'block';
+        var answerInput = problemCards[i].querySelector('input[name="answer"]');
+        answerInput.focus();
+      } else {
+        problemCards[i].style.display = 'none';
       }
     }
+  }
 
-    // 문제 1을 보여주는 코드
-    window.onload = function() {
-      showProblem('1');
+  function setActiveButton(problemId) {
+    button_num = problemId;
+    var buttons = document.querySelectorAll('.btn-number');
+    for (var i = 0; i < buttons.length; i++) {
+      if (buttons[i].innerText == problemId) {
+        buttons[i].parentNode.classList.add('active');
+      } else {
+        buttons[i].parentNode.classList.remove('active');
+      }
     }
-  </script>
+  }
+
+  // 제출 버튼 클릭 이벤트 리스너 추가
+  var submitButtons = document.getElementsByTagName('button');
+  for (var i = 0; i < submitButtons.length; i++) {
+    if (submitButtons[i].type == 'submit') {
+      submitButtons[i].addEventListener('click', function() {
+        // form submit 후 리다이렉트
+        var problemId = this.parentNode.querySelector('input[name="problem_id"]').value;
+        var answer = this.parentNode.querySelector('input[name="answer"]').value;
+        var answerDisplay = this.parentNode.parentNode.querySelector('span[id="answer-display' + problemId + '"]');
+        answerDisplay.innerText = '당신이 입력한 답 : ' + answer;
+        this.parentNode.submit();
+        window.location.href = redirectUrl;
+      });
+    }
+  }
+
+  // 문제 1을 보여주는 코드
+  window.onload = function() {
+    showProblem(localStorage.getItem('exam_number'));
+    setActiveButton(localStorage.getItem('exam_number'));
+  }
+</script>
 {% endblock %}
+
