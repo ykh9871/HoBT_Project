@@ -11,7 +11,7 @@
         <div class="mt-auto d-flex flex-row justify-content-center">
         <a id="start-button" style="font-size: 2rem; margin-right: 30px;" href="{% url 'exam:exam' %}" class="btn btn-lg btn-primary" onclick="localStorage.setItem('exam_number', 1), localStorage.setItem('score', 0)">문제 풀러 가기</a>
           {% if user.is_superuser %}
-          <a style="font-size: 2rem;" href="{% url 'exam:add_problem' %}" class="btn btn-lg btn-success">문제 만들러 가기</a>
+          <a style="font-size: 2rem;" href="{% url 'hobt_dict:add_problem' %}" class="btn btn-lg btn-success">문제 만들러 가기</a>
           {% endif %}
         </div>
       </div>

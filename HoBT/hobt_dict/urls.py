@@ -9,5 +9,8 @@ urlpatterns = [
     path('<int:pk>/delete/', views.hobt_dict_delete, name='hobt_dict_delete'), # 문제 삭제
     path('like/<int:pk>/\\Z', views.hobt_dict_like, name='hobt_dict_like'), # 문제 추천
     path('<int:pk>/', views.hobt_dict_detail, name='hobt_dict_detail'), # 문제 상세보기
-    path('search/', views.search, name='search') # 검색기능
+    path('search/', views.search, name='search'), # 검색기능
+    path('add_problem/', views.add_problem, name='add_problem'),
+    path('problem_list/', views.show_problems, name='problem_list'),
+    path('add_selected_problems/', views.add_selected_problems, name='add_selected_problems'),
 ]

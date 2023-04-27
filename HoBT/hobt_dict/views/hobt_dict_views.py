@@ -8,8 +8,8 @@ from django.http import JsonResponse
 from django.views import View
 from django.contrib.auth.decorators import user_passes_test
 
-from .models import HobtDict
-from .forms import HobtDictForm
+from ..models import HobtDict
+from ..forms import HobtDictForm
 
 
 def hobt_dict(request):

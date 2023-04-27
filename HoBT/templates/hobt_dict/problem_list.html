@@ -8,7 +8,7 @@
         관리자 문제 리스트
       </label>
     </h2>
-    <form method="post" action="{% url 'exam:add_selected_problems' %}">
+    <form method="post" action="{% url 'hobt_dict:add_selected_problems' %}">
       {% csrf_token %}
       <table class="table table-striped">
         <thead>
@@ -46,12 +46,12 @@
         </tbody>
       </table>
       <div class="d-flex justify-content-center">
-        <a href="{% url 'exam:add_problem' %}" class="btn btn-secondary">문제 출제하기</a>
+        <a href="{% url 'hobt_dict:add_problem' %}" class="btn btn-secondary">문제 출제하기</a>
         <a href="{% url 'hobt:index' %}" class="btn btn-secondary">메인으로</a>
       </div>
       <!-- 최종 제출 버튼 -->
       <div class="d-flex justify-content-center">
-        <form method="post" action="{% url 'exam:add_selected_problems' %}">
+        <form method="post" action="{% url 'hobt_dict:add_selected_problems' %}">
           {% csrf_token %}
           <button type="submit" class="btn btn-success">최종 제출</button>
         </form>

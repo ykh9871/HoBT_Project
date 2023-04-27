@@ -75,3 +75,17 @@ class HobtDict(models.Model):
 
     def get_absolute_url(self):
         return reverse('hobt_dict:hobt_dict_detail', args=[str(self.qid)])
+
+
+class Problem(models.Model):
+    qid = models.IntegerField(primary_key=True)
+    answer = models.TextField()
+    similar_answer = models.TextField()
+    content = models.TextField()
+    appearance_date = models.TextField()
+    small_category = models.TextField()
+    big_category = models.TextField()
+    note = models.TextField()
+
+    class Meta:
+        db_table = 'exam_problem'
