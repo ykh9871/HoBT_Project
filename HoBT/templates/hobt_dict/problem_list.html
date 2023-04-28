@@ -59,14 +59,14 @@
         <button type="button" id="delete-selected-problems-btn" class="btn btn-danger">선택한 항목 삭제</button>
       </div>
       <!-- 최종 제출 버튼 -->
-      <div class="d-flex justify-content-center">
-        {% if user.is_staff %}
-        <form method="post" action="{% url 'hobt_dict:add_selected_problems' %}">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-success">최종 제출</button>
-        </form>
-        {% endif %}
-      </div>
+{#      <div class="d-flex justify-content-center">#}
+{#        {% if user.is_staff %}#}
+{#        <form method="post" action="{% url 'hobt_dict:add_selected_problems' %}">#}
+{#          {% csrf_token %}#}
+{#          <button type="submit" class="btn btn-success">최종 제출</button>#}
+{#        </form>#}
+{#        {% endif %}#}
+{#      </div>#}
     </form>
   </div>
 
@@ -128,5 +128,46 @@
 
     // "선택한 항목 삭제" 버튼을 클릭했을 때, 선택한 항목들을 삭제하는 함수 실행
     deleteSelectedProblemsBtn.addEventListener('click', deleteSelectedProblems);
+
+    // 최종 제출 버튼 요소
+    const addSelectedProblemsBtn = document.querySelector('#add-selected-problems-btn');
+
+    // 선택한 항목을 추가하는 함수
+    function addSelectedProblems() {
+    // 선택한 문제들의 체크박스 요소들
+      const selectedCheckboxes = document.querySelectorAll('input[name="selected_problems"]:checked');
+      // 선택한 문제들의 qid 목록
+      const selectedProblemQids = Array.from(selectedCheckboxes).map(checkbox => checkbox.value);
+
+      if (selectedProblemQids.length > 0) {
+      // 서버에 선택한 문제들을 추가하는 요청 보내기
+        fetch('{% url "hobt_dict:add_selected_problems" %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+          body: JSON.stringify({
+            selected_problem_qids: selectedProblemQids
+          })
+        })
+        .then(response => {
+          if (response.ok) {
+            alert('선택한 항목이 추가됐습니다.');
+            window.location.reload();  // 페이지 새로고침
+          } else {
+            alert('문제 추가에 실패했습니다.');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          alert('문제 추가에 실패했습니다.');
+        });
+      } else {
+        alert('추가할 항목을 선택해주세요.');
+      }
+    }
+    // "최종 제출" 버튼을 클릭했을 때, 선택한 항목을 추가하는 함수 실행
+    addSelectedProblemsBtn.addEventListener('click', addSelectedProblems);
   </script>
 {% endblock %}

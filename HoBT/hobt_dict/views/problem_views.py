@@ -35,13 +35,11 @@ def show_problems(request):
 def add_selected_problems(request):
     if request.method == 'POST':
         selected_problem_qids = request.POST.getlist('selected_problem_qids')
-        exam_problems = Problem.objects.filter(qid__in=selected_problem_qids)
-        max_qid = HobtDict.objects.aggregate(Max('exam_problem__qid'))['exam_problem__qid__max'] or 0  # 최대값이 없을 경우 0으로 초기화
-        for exam_problem in exam_problems:
+        max_qid = HobtDict.objects.aggregate(Max('exam_problem__qid'))['exam_problem__qid__max'] or 0  # 최대 값이 없을 경우 0으로 초기화
+        for exam_problems in Problem.objects.filter(qid__in=selected_problem_qids):
             # 새로운 HobtDict 레코드 생성
             hobt_dict = HobtDict.objects.create(
-                exam_problem=exam_problem,
-                qid=max_qid + exam_problem.qid,
+                qid=max_qid + Problem.qid,
                 created_at=timezone.now(),
                 updated_at=None,
                 author_id=request.user.id
@@ -52,8 +50,8 @@ def add_selected_problems(request):
 
 def delete_selected_problems(request):
     if request.method == 'POST':
-        selected_problem_qids = json.loads(request.body)['selected_problem_qids']  # 요청 데이터에서 선택한 문제들의 QID 목록 가져오기
-        problems_to_delete = Problem.objects.filter(qid__in=selected_problem_qids)  # 선택한 문제들 필터링
+        selected_problem_ids = json.loads(request.body)['selected_problem_ids']  # 요청 데이터에서 선택한 문제들의 ID 목록 가져오기
+        problems_to_delete = Problem.objects.filter(qid__in=selected_problem_ids)  # 선택한 문제들 필터링
         problems_to_delete.delete()  # 선택한 문제들 삭제하기
 
         return JsonResponse({'success': True})  # 성공적으로 삭제됐음을 응답으로 보내기
