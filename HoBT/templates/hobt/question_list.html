@@ -18,10 +18,10 @@
     <table class="table">
         <thead>
             <tr class="table-dark text-center">
-                <th>번호</th>
-                <th style="width:50%">제목</th>
+                <th style="width:15%">번호</th>
+                <th >제목</th>
                 <th>글쓴이</th>
-                <th>작성일시</th>
+                <th style="width:25%">작성일</th>
             </tr>
         </thead>
         <tbody>
@@ -32,7 +32,7 @@
                 {#      번호 = 전체건수 - 시작인덱스 - 현재인덱스 +1 #}
                 {{ question_list.paginator.count|sub:question_list.start_index|sub:forloop.counter0|add:1 }}
             </td>
-            <td class="text-start">
+            <td style="font-size: 0.9rem" class="text-start">
                 <a href="{% url 'hobt:detail' question.id %}">{{ question.subject }}</a>
                 {% if question.answer_set.count > 0 %}
                 <span class="text-danger small mx-0">
@@ -40,8 +40,8 @@
                 </span>
                 {% endif %}
             </td>
-            <td>{{ question.author.username }}</td>  <!-- 글쓴이 추가 -->
-            <td>{{ question.create_date }}</td>
+            <td style="font-size: 0.8rem">{{ question.author.username }}</td>  <!-- 글쓴이 추가 -->
+            <td>{{ question.create_date|date:'Y/n/j H:i:s' }}</td>
         </tr>
         {% endfor %}
         {% else %}
