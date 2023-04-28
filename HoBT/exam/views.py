@@ -37,6 +37,8 @@ def exam_result(request):
 def exam_select(request):
 
     qs = HobtDict.objects.all().values()
+    for problem in qs:
+        problem['content'] = problem['content'].replace('.', '.<br>').replace('?', '?<br>')
     data = pd.DataFrame(qs)
     random_data = data.sample(n=20, replace=False).reset_index(drop=True)
 
