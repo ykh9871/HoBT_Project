@@ -7,9 +7,8 @@
       <p class="mb-4" style="font-size: 0.9rem; line-height: 2; margin-top: -50px; color: white;">정보처리기사 실기 CBT, 일명 HoBT입니다!<br>지금 바로 풀어 보시고 자격증을 취득해보세요!</p>
       <h1 style="font-size: 6rem; font-family: Cambria, serif; color: white;">HoBT</h1>
       <div class="mt-auto d-flex flex-row justify-content-center">
-          <a id="start-button" style="font-size: 1.5rem; margin-top: 250px; margin-right: 30px;" href="{% url 'exam:exam' %}" class="btn btn-lg btn-primary"
-             onclick="localStorage.setItem('exam_number', 1), localStorage.setItem('total_score', 0),
-             localStorage.setItem('correct_answer', 0)">문제 풀기</a>
+          <a id="start-button" style="font-size: 1.5rem; margin-top: 250px; margin-right: 30px;" href="{% url 'exam:exam_select' %}" class="btn btn-lg btn-primary"
+             >문제 풀기</a>
           {% if user.is_authenticated %}
           <a style="font-size: 1.5rem; margin-top: 250px;" href="{% url 'hobt_dict:add_problem' %}" class="btn btn-lg btn-success">문제 만들기</a>
           {% endif %}

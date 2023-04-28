@@ -29,3 +29,5 @@ def exam_judge(request):
 def exam_result(request):
     return render(request, 'exam/exam_result.html')
 
+def exam_select(request):
+    return render(request, 'exam/exam_select.html')

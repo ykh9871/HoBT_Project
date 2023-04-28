@@ -50,7 +50,6 @@
       </div>
       <div class="col-12 mt-2">
         <form id="judgement-form" action="{% url 'exam:exam' %}" method="get">
-          {% csrf_token %}
           <div class="form-group" style="text-align:center;">
             <label for="judgement" style="font-size:1.5rem;">당신이 입력한 답이 정답이라고 생각하시나요?</label>
             <p></p>
@@ -154,6 +153,7 @@ document.getElementById('judgement-button-1').addEventListener('click', function
   showSubmitButton();
   document.getElementById('submit-button').focus();
   document.getElementById('judgement-button-2').classList.add('d-none');
+  window.scrollTo(0,document.body.scrollHeight);
 });
 
 document.getElementById('judgement-button-2').addEventListener('click', function() {
@@ -162,6 +162,7 @@ document.getElementById('judgement-button-2').addEventListener('click', function
   showSubmitButton();
   document.getElementById('submit-button').focus();
   document.getElementById('judgement-button-1').classList.add('d-none');
+  window.scrollTo(0,document.body.scrollHeight);
 });
 
 document.getElementById('submit-button').addEventListener('click', function() {

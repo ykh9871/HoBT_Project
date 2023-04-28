@@ -31,7 +31,7 @@
 <div class="row justify-content-center my-3">
   <div class="col-md-4 mb-2 text-center">
     <button tabindex="1" class="btn btn-primary btn-block mx-2" onclick="restartExam()">다시 풀기</button>
-    <button tabindex="2" class="btn btn-danger btn-block mx-2" onclick="exitExam()">메인 메뉴</button>
+    <button tabindex="2" class="btn btn-danger btn-block mx-2" onclick="exitExam()">문제 선택</button>
   </div>
 </div>
 
@@ -45,7 +45,7 @@
   }
 
   function exitExam() {
-    window.location.href = "{% url 'index' %}";
+    window.location.href = "{% url 'exam:exam_select' %}";
   }
 
   var total_score = localStorage.getItem('total_score');

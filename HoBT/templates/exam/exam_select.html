@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  .btn {
+    width: 130px;
+    height: 50px;
+    font-size: 20px;
+  }
+
+  body {
+    background-color: #f2f2f2;
+    font-size: 1.2rem;
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card w-auto mx-auto">
+        <div class="card-body text-center">
+          <h1 class="display-4">문제 유형 선택</h1><br>
+          <p>이 페이지부터는 뒤로가기 버튼을 사용하실 수 없습니다.<br>버튼을 이용해서 메인메뉴로 이동해주세요!</p>
+          <br>
+          <div class="d-flex justify-content-center mb-3 gap-2">
+            <a tabindex="2" href="/" class="btn btn-danger btn-lg mr-2">메인메뉴</a>
+            <form action="{% url 'exam:exam' %}" method="get">
+              {% csrf_token %}
+              <button tabindex="1" type="submit" class="btn btn-primary btn-lg mr-2"
+                      onclick="localStorage.setItem('exam_number', 1), localStorage.setItem('total_score', 0),
+             localStorage.setItem('correct_answer', 0)" autofocus>단답형</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  window.history.pushState(null, null, window.location.href);
+  window.onpopstate = function () {
+    window.history.go(1);
+  };
+</script>
+</script>
+{% endblock %}
