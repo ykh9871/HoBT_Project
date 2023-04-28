@@ -5,7 +5,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse
-from django.views import View
 from django.contrib.admin.views.decorators import staff_member_required
 
 from ..models import HobtDict
@@ -23,8 +22,8 @@ def hobt_dict(request):
     hobt_dict_list = HobtDict.objects.order_by('-qid')
     if q:
         hobt_dict_list = hobt_dict_list.filter(
-            Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q)| Q(qid__icontains=q)
-            | Q(small_category__icontains=q)| Q(big_category__icontains=q)| Q(appearance_date__icontains=q)
+            Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q) | Q(qid__icontains=q)
+            | Q(small_category__icontains=q) | Q(big_category__icontains=q) | Q(appearance_date__icontains=q)
         ).distinct()
 
     paginator = Paginator(hobt_dict_list, 10)
@@ -37,24 +36,24 @@ def hobt_dict(request):
     context = {'hobt_dicts': hobt_dicts, 'page': page, 'q': q, 'page_range': page_range}
     return render(request, 'hobt_dict/hobt_dict.html', context)
 
-
-class HobtDictCreateView(View):
-    """
-    문제 등록
-    """
-    def get(self, request):
-        form = HobtDictForm()
-        return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
-
-    def post(self, request):
-        form = HobtDictForm(request.POST)
-        if form.is_valid():
-            hobt_dict = form.save(commit=False)
-            hobt_dict.author = request.user
-            hobt_dict.save()
-            messages.success(request, '문제가 등록되었습니다.')
-            return redirect(hobt_dict)
-        return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
+# 현재는 사용하지 않는기능
+# class HobtDictCreateView(View):
+#     """
+#     문제 등록
+#     """
+#     def get(self, request):
+#         form = HobtDictForm()
+#         return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
+#
+#     def post(self, request):
+#         form = HobtDictForm(request.POST)
+#         if form.is_valid():
+#             hobt_dict = form.save(commit=False)
+#             hobt_dict.author = request.user
+#             hobt_dict.save()
+#             messages.success(request, '문제가 등록되었습니다.')
+#             return redirect(hobt_dict)
+#         return render(request, 'hobt_dict/hobt_dict_form.html', {'form': form})
 
 
 @staff_member_required
