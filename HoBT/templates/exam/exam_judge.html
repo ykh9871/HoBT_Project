@@ -10,6 +10,10 @@
   body {
     background-color: #f2f2f2;
   }
+  .form-group {
+  text-align: center;
+  overflow: auto; /* 추가 */
+  }
 </style>
 <div class="container my-5">
     <div class="row">
@@ -167,15 +171,11 @@ document.getElementById('judgement-button-2').addEventListener('click', function
 
 document.getElementById('submit-button').addEventListener('click', function() {
   // localStorage 값 증가
-  if ({{ problem_id }} < 20) {
-    localStorage.setItem('exam_number', {{ problem_id }} + 1);
+  if (exam_number < 20) {
+    localStorage.setItem('exam_number', exam_number + 1);
   } else {
     localStorage.setItem('exam_number', 20);
   }
-
-   // problem_id 값 증가
-  var problemId = parseInt(document.getElementById('problem-id').value);
-  document.getElementById('problem-id').value = problemId + 1;
 
 });
 
