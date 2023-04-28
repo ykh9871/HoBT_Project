@@ -3,11 +3,10 @@
 {% block content %}
     <style>
         .pagination .btn {
-          font-size: 12px;
           padding: 0.375rem 0.5rem;
         }
     </style>
-  <div class="container" style="font-size: 12px;">
+  <div class="container" style="font-size: 20px;">
     <h3 class="my-4">문제 사전</h3>
     <form action="{% url 'hobt_dict:search' %}" method="GET" class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2 mb-3" type="text" placeholder="검색어를 입력하세요" aria-label="검색어" name="q">

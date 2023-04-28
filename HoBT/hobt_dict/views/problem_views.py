@@ -40,7 +40,7 @@ def add_selected_problems(request):
             problem.answer = request.POST.get('answer' + qid)
             problem.save()
         return redirect(reverse_lazy('hobt_dict:problem_list'))
-    return redirect(reverse_lazy('hobt:index'))
+    return redirect(reverse_lazy('hobt_dict:hobt_dict'))
 
 
 def delete_selected_problems(request):

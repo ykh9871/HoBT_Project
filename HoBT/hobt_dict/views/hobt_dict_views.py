@@ -63,10 +63,10 @@ def hobt_dict_modify(request, pk):
     문제 수정
     """
     hobt_dict = get_object_or_404(HobtDict, pk=pk)
-    if request.user != hobt_dict.author:
-        messages.error(request, '수정권한이 없습니다')
-        return redirect('hobt_dict:hobt_dict_detail', pk=hobt_dict.pk)
-
+    # if request.user != hobt_dict.author:
+    #     messages.error(request, '수정권한이 없습니다')
+    #     return redirect('hobt_dict:hobt_dict_detail', pk=hobt_dict.pk)
+    # 접근 자체를 관리자만 접근 할 수 있도록 작성해서 주석처리
     if request.method == 'POST':
         form = HobtDictForm(request.POST, instance=hobt_dict)
         if form.is_valid():
