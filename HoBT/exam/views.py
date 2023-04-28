@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Hobt1
 from hobt_dict.models import HobtDict
@@ -38,7 +39,7 @@ def exam_select(request):
 
     qs = HobtDict.objects.all().values()
     for problem in qs:
-        problem['content'] = problem['content'].replace('.', '.<br>').replace('?', '?<br>')
+        problem['content'] = re.sub(r'(\.|\?)\s', r'\1<br>', problem['content'])
     data = pd.DataFrame(qs)
     random_data = data.sample(n=20, replace=False).reset_index(drop=True)
 
