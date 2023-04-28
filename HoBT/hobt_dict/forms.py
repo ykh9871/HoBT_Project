@@ -100,4 +100,15 @@ class ProblemForm(forms.ModelForm):
     appearance_date = forms.ChoiceField(choices=APPEARANCE_DATE_CHOICES)
     class Meta:
         model = Problem
-        fields = '__all__'
+        fields = ['qid', 'answer', 'similar_answer', 'content', 'appearance_date', 'small_category', 'big_category',
+                  'note']
+        labels = {
+            'qid': '문제 번호',
+            'answer': '정답',
+            'similar_answer': '유사 답안',
+            'content': '문제 내용',
+            'appearance_date': '출제 유형',
+            'small_category': '소분류',
+            'big_category': '대분류',
+            'note': '비고'
+        }
