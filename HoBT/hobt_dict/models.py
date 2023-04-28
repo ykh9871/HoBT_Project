@@ -92,6 +92,7 @@ class Problem(models.Model):
         blank=True
     )
     note = models.TextField(verbose_name='비고', blank=True)
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
 
     class Meta:
         db_table = 'exam_problem'
