@@ -11,7 +11,7 @@
     background-color: #f2f2f2;
   }
 </style>
-  <div class="container my-5" style="font-size: 130%;">
+  <div class="container my-5" style="font-size: 120%;">
     <div class="row">
       <div class="d-flex justify-content-between">
         <h2 class="mr-auto">문제 리스트</h2>
@@ -19,45 +19,50 @@
           <button tabindex="3" type="submit" class="btn btn-primary ml-2">채점하기</button>
         </form>
       </div>
-      {% for problem in hobt_1 %}
-      <div class="col-12 my-3 problem-card" id="{{ problem.qid }}" {% if problem.qid != current_problem_id %}style="display:none"{% endif %}>
+      {% for row in data_list %}
+         <div class="col-12 my-3 problem-card" id="{{ forloop.counter }}">
           <div class="card" style="border: 1px solid black;">
             <div class="card-body">
-              <h4 class="card-title">{{ problem.qid }}번 문제</h4>
-              <p class="card-text">출제연도 : {{ problem.appearance_date }}<br>
-              문제대분류 : {{ problem.big_category }}<br>
-              문제소분류 : {{ problem.small_category }}<br></p><br>
-              <p class="card-text">문제 : {{ problem.content|safe }}  </p><br>
+              <h4 class="card-title">{{ forloop.counter }}번 문제</h4>
+              <p class="card-text">출제연도 : {{ row.appearance_date }}<br>
+              문제대분류 : {{ row.big_category }}<br>
+              문제소분류 : {{ row.small_category }}<br></p><br>
+              <p class="card-text">문제 : {{ row.content|safe }}  </p><br>
               <form action="{% url 'exam:exam_judge' %}" method="get">
-                  <label for="answer{{ problem.qid }}">정답 :</label><br>
+                  <label for="answer{{ row.qid }}">정답 :</label><br>
                 <div class="form-group d-flex flex-row align-items-center my-0 gap-2">
-                  <div class="d-flex flex-column justify-content-center">
-                    <input style="width: 400px; height: 50px; font-size: 110%; border: 1px solid black;" tabindex="1" type="text" class="form-control ml-2" id="answer{{ problem.qid }}" name="answer">
+                  <div class="d-flex flex-column justify-content-center" style="width: 100%">
+                    <input style="height: 50px; font-size: 110%; border: 1px solid black;" tabindex="1" type="text" class="form-control ml-2" id="answer{{ row.qid }}" name="answer">
                   <div class="text-center">
                     <button tabindex="2" type="submit" class="btn btn-primary mt-2">제출</button>
                   </div>
-                    <input type="hidden" name="problem_id" value="{{ problem.qid }}">
+                    <input type="hidden" name="problem_id" value="{{ row.qid }}">
                   </div>
                 </div>
               </form>
               <div class="mt-3">
-                <span id="answer-display{{ problem.qid }}"></span>
+                <span id="answer-display{{ row.qid }}"></span>
               </div>
             </div>
           </div>
         </div>
       {% endfor %}
-{#      <div class="col-12 mt-3 d-flex justify-content-center">#}
-{#        {% for problem in hobt_1 %}#}
-{#          <button class="btn btn-primary mx-2{% if problem.qid == button_num %} active{% endif %}" onclick="showProblem('{{ problem.qid }}'); setRedirectUrl('{{ problem.qid }}'); setActiveButton('{{ problem.qid }}')">#}
-{#            <span class="btn-number{% if problem.qid == button_num %} active{% endif %}" {% if problem.qid == button_num %} autofocus {% endif %}>{{ problem.qid }}</span>#}
-{#          </button>#}
-{#        {% endfor %}#}
-{#      </div>#}
+      <div class="col-12 mt-3 d-flex justify-content-center">
+        {% for problem in hobt_1 %}
+          <button class="btn btn-primary mx-2{% if problem.qid == button_num %} active{% endif %}" onclick="showProblem('{{ problem.qid }}'); setRedirectUrl('{{ problem.qid }}'); setActiveButton('{{ problem.qid }}')">
+            <span class="btn-number{% if problem.qid == button_num %} active{% endif %}" {% if problem.qid == button_num %} autofocus {% endif %}>{{ problem.qid }}</span>
+          </button>
+        {% endfor %}
+      </div>
     </div>
   </div>
-
   <script>
+  // 브라우저 뒤로가기 버튼 방지
+  window.history.pushState(null, null, window.location.href);
+  window.onpopstate = function() {
+    window.history.go(1);
+  };
+
   var redirectUrl = '{% url "exam:exam" %}';
   var button_num = localStorage.getItem('exam_number');
 
@@ -114,10 +119,7 @@
 // p 요소의 innerHTML을 localStorage에서 가져온 값으로 설정
   document.getElementById('exam_number').innerHTML = localStorage.getItem('exam_number');
 
-window.history.pushState(null, null, window.location.href);
-    window.onpopstate = function () {
-      window.history.go(1);
-    };
+
 </script>
 {% endblock %}
 
