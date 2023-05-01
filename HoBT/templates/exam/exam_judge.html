@@ -58,8 +58,8 @@
             <label for="judgement" style="font-size:1.5rem;">당신이 입력한 답이 정답이라고 생각하시나요?</label>
             <p></p>
             <div>
-              <button id="judgement-button-1" type="button" class="btn btn-success" onclick="setJudgementValue('1'); showCongratulation(); showSubmitButton(); document.getElementById('submit-button').focus();">정답 : 1</button>
-              <button id="judgement-button-2" type="button" class="btn btn-danger" onclick="setJudgementValue('2'); showRegret(); showSubmitButton(); document.getElementById('submit-button').focus();">오답 : 2</button>
+              <button id="judgement-button-1" type="button" class="btn btn-success" onclick="setJudgementValue('1'); showCongratulation(); showSubmitButton();">정답 : 1</button>
+              <button id="judgement-button-2" type="button" class="btn btn-danger" onclick="setJudgementValue('2'); showRegret(); showSubmitButton();">오답 : 2</button>
             </div>
           </div>
           <input type="hidden" id="judgement" name="judgement" required>
@@ -128,19 +128,12 @@ function showRegret() {
 }
 
 function showSubmitButton() {
-  if (exam_number === 20) {
-    document.getElementById('final-button').style.display = 'block';
-  } else {
-    document.getElementById('submit-button').style.display = 'block';
-  }
-  document.getElementById('submit-button').addEventListener('click', function() {
-  if (is_correct === 1) {
-    correct_answer = parseInt(localStorage.getItem('correct_answer'));
-    localStorage.setItem('correct_answer', correct_answer + 1);
-  }
-});
-
-}
+    if (exam_number === 20) {
+        document.getElementById('final-button').style.display = 'block';
+    } else {
+        document.getElementById('submit-button').style.display = 'block';
+    }
+};
 
 document.addEventListener('keydown', function(event) {
   if (event.code === 'Digit1' && !document.getElementById('judgement-button-1').classList.contains('d-none')) {
@@ -182,6 +175,10 @@ document.getElementById('submit-button').addEventListener('click', function() {
     localStorage.setItem('exam_number', exam_number + 1);
   } else {
     localStorage.setItem('exam_number', 20);
+  }
+  if (is_correct == 1) {
+    correct_answer = parseInt(localStorage.getItem('correct_answer'));
+    localStorage.setItem('correct_answer', correct_answer + 1);
   }
 
 });
