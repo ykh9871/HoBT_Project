@@ -94,22 +94,22 @@
 </div>
 
   <script>
+  let is_correct = 0;
+
     function setJudgementValue(value) {
-      if (!document.getElementById('judgement-button-1').classList.contains('d-none') && !document.getElementById('judgement-button-2').classList.contains('d-none')) {
-        document.getElementById('judgement').value = value;
-      }
-    }
+  if (!document.getElementById('judgement-button-1').classList.contains('d-none') && !document.getElementById('judgement-button-2').classList.contains('d-none')) {
+    is_correct = parseInt(value);
+    document.getElementById('judgement').value = value;
+  }
+}
+
    function showCongratulation() {
   if (document.getElementById('congratulation-message').classList.contains('d-none')) {
     document.getElementById('congratulation-message').classList.remove('d-none');
     document.getElementById('regret-message').classList.add('d-none');
     document.getElementById('judgement-button-1').classList.add('d-none');
     document.getElementById('judgement-button-2').classList.remove('d-none');
-    correct_answer = parseInt(localStorage.getItem('correct_answer'));
     total_score = parseInt(localStorage.getItem('total_score'));
-    if (correct_answer < 20) {
-      localStorage.setItem('correct_answer', correct_answer + 1);
-    }
     if (total_score < 100) {
       localStorage.setItem('total_score', total_score + 5);
     }
@@ -133,6 +133,13 @@ function showSubmitButton() {
   } else {
     document.getElementById('submit-button').style.display = 'block';
   }
+  document.getElementById('submit-button').addEventListener('click', function() {
+  if (is_correct === 1) {
+    correct_answer = parseInt(localStorage.getItem('correct_answer'));
+    localStorage.setItem('correct_answer', correct_answer + 1);
+  }
+});
+
 }
 
 document.addEventListener('keydown', function(event) {
