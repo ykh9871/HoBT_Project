@@ -95,6 +95,7 @@
 
   <script>
   let is_correct = 0;
+  let is_enter_pressed = false;
 
     function setJudgementValue(value) {
   if (!document.getElementById('judgement-button-1').classList.contains('d-none') && !document.getElementById('judgement-button-2').classList.contains('d-none')) {
@@ -171,16 +172,20 @@ document.getElementById('judgement-button-2').addEventListener('click', function
 
 document.getElementById('submit-button').addEventListener('click', function() {
   // localStorage 값 증가
-  if (exam_number < 20) {
-    localStorage.setItem('exam_number', exam_number + 1);
-  } else {
-    localStorage.setItem('exam_number', 20);
+  if (is_enter_pressed == false) {
+      if (exam_number < 20) {
+          localStorage.setItem('exam_number', exam_number + 1);
+      } else {
+          localStorage.setItem('exam_number', 20);
+      }
+      if (is_correct == 1) {
+          correct_answer = parseInt(localStorage.getItem('correct_answer'));
+          localStorage.setItem('correct_answer', correct_answer + 1);
+          is_enter_pressed = true;
+      } else {
+          is_enter_pressed = true;
+      }
   }
-  if (is_correct == 1) {
-    correct_answer = parseInt(localStorage.getItem('correct_answer'));
-    localStorage.setItem('correct_answer', correct_answer + 1);
-  }
-
 });
 
     correct_answer = parseInt(localStorage.getItem('correct_answer'));
