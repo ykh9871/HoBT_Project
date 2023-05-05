@@ -14,6 +14,12 @@
               <form method="post">
                 {% csrf_token %}
                     <div class="form-group-inline">
+                        <div class="form-group-big">
+                          <label for="appearance_date">과목:</label>
+                          {{ form.subject }}
+                        </div>
+                    </div>
+                    <div class="form-group-inline">
                         <div class="form-group-mini">
                           <label for="answer">정답:</label>
                           <input type="text" class="form-control" id="answer" name="answer" required>

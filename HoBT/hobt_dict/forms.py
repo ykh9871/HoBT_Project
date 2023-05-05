@@ -75,6 +75,9 @@ class ProblemForm(forms.ModelForm):
         ('통합 구현', '통합 구현'),
         ('프로그래밍 언어 활용', '프로그래밍 언어 활용'),
         ('화면 설계', '화면 설계'),
+        ('1과목', '1과목'),
+        ('2과목', '2과목'),
+        ('3과목', '3과목'),
         # 추가 카테고리를 필요에 따라 추가하세요.
     ]
 
@@ -97,14 +100,21 @@ class ProblemForm(forms.ModelForm):
         ('2021년 3회 필기', '2021년 3회 필기'),
         ('2022년 1회 필기', '2022년 1회 필기'),
         ('2022년 2회 필기', '2022년 2회 필기'),
+        ('서브노트', '서브노트'),
         # 추가 카테고리를 필요에 따라 추가하세요.
     ]
+    SUBJECT_CHOICES = [
+        ('정보처리기사', '정보처리기사'),
+        ('ADsP', 'ADsP'),
+        # 추가 카테고리를 필요에 따라 추가하세요.
+    ]
+    subject = forms.ChoiceField(choices=SUBJECT_CHOICES)
     big_category = forms.ChoiceField(choices=BIG_CATEGORY_CHOICES)
     appearance_date = forms.ChoiceField(choices=APPEARANCE_DATE_CHOICES)
     class Meta:
         model = Problem
         fields = ['qid', 'answer', 'similar_answer', 'content', 'appearance_date', 'small_category', 'big_category',
-                  'note']
+                  'note', 'subject']
         labels = {
             'qid': '문제 번호',
             'answer': '정답',
@@ -113,5 +123,6 @@ class ProblemForm(forms.ModelForm):
             'appearance_date': '출제 유형',
             'small_category': '소분류',
             'big_category': '대분류',
-            'note': '비고'
+            'note': '비고',
+            'subject': '과목'
         }
