@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="container-fluid" style="background-image: url('/static/bg.jpg'); background-size: cover; background-position: center center;">
@@ -16,13 +17,5 @@
     </div>
   </div>
 </div>
-<script>
-window.history.pushState(null, null, window.location.href);
-  window.onpopstate = function () {
-    window.history.go(1);
-};
-  window.onload = function() {
-   document.getElementById('start-button').focus();
-  }
-</script>
+<script src="{% static 'index.js' %}"></script>
 {% endblock %}

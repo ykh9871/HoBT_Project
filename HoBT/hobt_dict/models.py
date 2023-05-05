@@ -16,6 +16,9 @@ BIG_CATEGORY_CHOICES = [
     ('통합 구현', '통합 구현'),
     ('프로그래밍 언어 활용', '프로그래밍 언어 활용'),
     ('화면 설계', '화면 설계'),
+    ('1과목', '1과목'),
+    ('2과목', '2과목'),
+    ('3과목', '3과목'),
     # 추가 카테고리를 필요에 따라 추가하세요.
 ]
 
@@ -38,6 +41,13 @@ APPEARANCE_DATE_CHOICES = [
     ('2021년 3회 필기', '2021년 3회 필기'),
     ('2022년 1회 필기', '2022년 1회 필기'),
     ('2022년 2회 필기', '2022년 2회 필기'),
+    ('서브노트', '서브노트')
+    # 추가 카테고리를 필요에 따라 추가하세요.
+]
+
+SUBJECT_CHOICES = [
+    ('ADsP', 'ADsP'),
+    ('정보처리기사', '정보처리기사'),
     # 추가 카테고리를 필요에 따라 추가하세요.
 ]
 
@@ -47,6 +57,13 @@ class HobtDict(models.Model):
     문제 사전 모델
     """
     qid = models.AutoField(verbose_name='문제 번호', primary_key=True)
+    subject = models.CharField(
+        verbose_name='과목',
+        max_length=255,
+        choices=SUBJECT_CHOICES,
+        blank=True,
+        default='Undetermined'
+    )
     answer = models.CharField(verbose_name='정답', max_length=255)
     similar_answer = models.CharField(verbose_name='유사 답안', max_length=255, blank=True)
     content = models.TextField(verbose_name='문제 내용')
@@ -75,6 +92,13 @@ class HobtDict(models.Model):
 
 class Problem(models.Model):
     qid = models.AutoField(verbose_name='문제 번호', primary_key=True)
+    subject = models.CharField(
+        verbose_name='과목',
+        max_length=255,
+        choices=SUBJECT_CHOICES,
+        blank=True,
+        default='Undetermined'
+    )
     answer = models.CharField(verbose_name='정답', max_length=255)
     similar_answer = models.CharField(verbose_name='유사 답안', max_length=255, blank=True)
     content = models.TextField(verbose_name='문제 내용')

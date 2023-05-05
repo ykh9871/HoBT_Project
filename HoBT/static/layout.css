@@ -1,0 +1,26 @@
+.navbar {
+    padding: 0.5rem 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 0 3px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.navbar-toggler {
+    border: none;
+    outline: none;
+}
+
+.navbar-nav {
+    font-size: 0.9rem;
+}
+
+.nav-link {
+    padding: 0.73rem 0.5rem;
+    color: #ddd;
+}
+
+.nav-link:hover {
+    color: #fff;
+}

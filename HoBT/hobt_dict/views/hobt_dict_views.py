@@ -23,7 +23,8 @@ def hobt_dict(request):
     if q:
         hobt_dict_list = hobt_dict_list.filter(
             Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q) | Q(qid__icontains=q)
-            | Q(small_category__icontains=q) | Q(big_category__icontains=q) | Q(appearance_date__icontains=q)
+            | Q(small_category__icontains=q) | Q(big_category__icontains=q) | Q(appearance_date__icontains=q) |
+            Q(subject__icontains=q)
         ).distinct()
 
     paginator = Paginator(hobt_dict_list, 10)
@@ -84,18 +85,18 @@ def hobt_dict_modify(request, pk):
     return render(request, 'hobt_dict/hobt_dict_modify.html', context)
 
 
-@login_required(login_url='common:login')
-def hobt_dict_delete(request, pk):
-    """
-    문제 삭제
-    """
-    hobt_dict = get_object_or_404(HobtDict, pk=pk)
-    if request.user != hobt_dict.author:
-        messages.error(request, '삭제권한이 없습니다')
-    else:
-        hobt_dict.delete()
-        messages.success(request, '문제가 삭제되었습니다.')
-        return redirect('hobt_dict:hobt_dict')
+# @login_required(login_url='common:login')
+# def hobt_dict_delete(request, pk):
+#     """
+#     문제 삭제
+#     """
+#     hobt_dict = get_object_or_404(HobtDict, pk=pk)
+#     if request.user != hobt_dict.author:
+#         messages.error(request, '삭제권한이 없습니다')
+#     else:
+#         hobt_dict.delete()
+#         messages.success(request, '문제가 삭제되었습니다.')
+#         return redirect('hobt_dict:hobt_dict')
 
 
 @login_required(login_url='common:login')
@@ -123,7 +124,7 @@ def hobt_dict_detail(request, pk):
     return render(request, 'hobt_dict/detail.html', context)
 
 
-def search(request):
+def hobt_search(request):
     """
     문제 검색 기능
     """
@@ -134,7 +135,8 @@ def search(request):
     if q:
         hobt_dict_list = hobt_dict_list.filter(
             Q(answer__icontains=q) | Q(similar_answer__icontains=q) | Q(content__icontains=q)| Q(qid__icontains=q)
-            | Q(small_category__icontains=q)| Q(big_category__icontains=q)| Q(appearance_date__icontains=q)
+            | Q(small_category__icontains=q)| Q(big_category__icontains=q)| Q(appearance_date__icontains=q) |
+            Q(subject__icontains=q)
         ).distinct()
 
     paginator = Paginator(hobt_dict_list, 10)

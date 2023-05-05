@@ -1,37 +1,7 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-  <style>
-    html, body {
-      height: 100%;
-    }
-    .content-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 70vh;
-    }
-    .card-header {
-      background-color: #f8f9fa;
-      border-bottom: 1px solid #dee2e6;
-    }
-    .form-group-inline {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .form-group-inline label {
-      flex-basis: 80px;
-    }
-    .form-group-inline .form-control {
-      flex: 1;
-    }
-    .form-group-mini{
-    width: 50%;
-    }
-    .form-group-big{
-    width: 100%;
-    }
-  </style>
+<link rel="stylesheet" type="text/css" href="{% static 'hobt_dict.css' %}">
   <div class="content-container">
     <div class="container mt-3" style="max-width: 1000px; width: 100%;">
       <div class="row">

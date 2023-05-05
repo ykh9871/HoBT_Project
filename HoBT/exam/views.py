@@ -37,7 +37,7 @@ def exam_result(request):
 
 def exam_select(request):
 
-    qs = HobtDict.objects.all().values()
+    qs = HobtDict.objects.filter(subject='정보처리기사').values()
     for problem in qs:
         problem['content'] = re.sub(r'(\.|\?)\s', r'\1<br>', problem['content'])
     data = pd.DataFrame(qs)

@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'hobt_dict.css' %}">
   <div class="container" style="font-size: 20px;">
     <h3 class="my-4">문제 사전</h3>
-    <form action="{% url 'hobt_dict:hobt_search' %}" method="GET" class="form-inline my-2 my-lg-0">
+    <form action="{% url 'hobt_dict:cs_search' %}" method="GET" class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2 mb-3" type="text" placeholder="검색어를 입력하세요" aria-label="검색어" name="q">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">검색</button>
     </form>
     <hr>
-    {% for hobt_dict in hobt_dicts %}
+    {% for hobt_dict in cs_dicts %}
       <div class="card mb-4">
         <div class="card-body">
           <h4 class="card-title">{{ hobt_dict.subject }}</h4>
@@ -29,21 +28,21 @@
     <hr>
     <div class="pagination justify-content-center">
         {% if hobt_dicts.has_previous %}
-        <a class="btn btn-outline-primary btn-sm" href="?page={{ hobt_dicts.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" role="button">이전</a>
+        <a class="btn btn-outline-primary btn-sm" href="?page={{ cs_dicts.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" role="button">이전</a>
         {% else %}
         <button class="btn btn-outline-secondary btn-sm" type="button" disabled>이전</button>
         {% endif %}
 
         {% for num in page_range %}
-          {% if num == hobt_dicts.number %}
+          {% if num == cs_dicts.number %}
             <span class="btn btn-outline-secondary btn-sm">{{ num }}</span>
-          {% elif num > 1 and num < hobt_dicts.paginator.num_pages %}
+          {% elif num > 1 and num < cs_dicts.paginator.num_pages %}
             <a class="btn btn-outline-primary btn-sm" href="?page={{ num }}{% if q %}&q={{ q }}{% endif %}" role="button">{{ num }}</a>
           {% endif %}
         {% endfor %}
 
-        {% if hobt_dicts.has_next %}
-        <a class="btn btn-outline-primary btn-sm" href="?page={{ hobt_dicts.next_page_number }}{% if q %}&q={{ q }}{% endif %}" role="button">다음</a>
+        {% if cs_dicts.has_next %}
+        <a class="btn btn-outline-primary btn-sm" href="?page={{ cs_dicts.next_page_number }}{% if q %}&q={{ q }}{% endif %}" role="button">다음</a>
         {% else %}
         <button class="btn btn-outline-secondary btn-sm" type="button" disabled>다음</button>
         {% endif %}
