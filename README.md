@@ -32,4 +32,14 @@
 * **Amazon RDS & MySQL** - 사용자 데이터를 저장하기 위해 Amazon RDS에서 MySQL을 사용했습니다.  
 * **PyCharm IDEA Ultimate** - Django 백엔드 개발을 위한 주요 IDE로 사용했습니다.  
 
-## HoBT 사이트 소개
+## HoBT 웹 페이지 미리보기
+![HoBT_page-0001](https://github.com/ykh9871/HoBT_Project/assets/121912366/01fe6e1a-9353-4224-bc3f-70fd40c034b3)
+![HoBT_page-0002](https://github.com/ykh9871/HoBT_Project/assets/121912366/10ace321-a862-44e2-92ee-8bdd4dd5c460)
+![HoBT_page-0003](https://github.com/ykh9871/HoBT_Project/assets/121912366/77f1448f-6c86-46a3-872d-1f0ad88dc066)
+![HoBT_page-0004](https://github.com/ykh9871/HoBT_Project/assets/121912366/dd646120-a2df-4539-b4a6-34d92128ceac)
+![HoBT_page-0005](https://github.com/ykh9871/HoBT_Project/assets/121912366/71f51e13-2e3b-49c4-acee-d53bd5ee1bdd)
+![HoBT_page-0006](https://github.com/ykh9871/HoBT_Project/assets/121912366/0bf2a9cc-2a88-4c54-b802-f0593323fd72)
+![HoBT_page-0007](https://github.com/ykh9871/HoBT_Project/assets/121912366/b3d5484f-2fca-4cdb-9801-3dc99c659e0a)
+![HoBT_page-0008](https://github.com/ykh9871/HoBT_Project/assets/121912366/4b2d46a4-6344-4479-92b6-38f95f7fd865)
+![HoBT_page-0009](https://github.com/ykh9871/HoBT_Project/assets/121912366/c4a290f6-1c47-4514-a1ca-ea40fed028ad)
+![HoBT_page-0010](https://github.com/ykh9871/HoBT_Project/assets/121912366/8c626209-f087-4982-b5ac-60378e7ed7b8)
